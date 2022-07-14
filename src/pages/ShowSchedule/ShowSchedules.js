@@ -1,181 +1,119 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Checkbox} from "antd";
 import {Link, useParams, withRouter} from "react-router-dom";
-const CheckboxGroup = Checkbox.Group;
-
+import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
+import 'rsuite-table/dist/css/rsuite-table.css';
 
 export default function ShowSchedules(){
     const params = useParams();
-    let data = null
-    axios.get("http://localhost:8000/schedules/"+params['name']).then((res)=>{
-        console.log(res.data)
-    })
+    const [tableList, setTableList] = React.useState()
+    const EditQuestion = ({rowData,dataKey,...props}) =>{
+        return(<Cell {...props}>
+            <Link to={"/showQuestion/"+ rowData[dataKey]}>
+                <button>Edit</button>
+            </Link>
+        </Cell>)
+    }
+    useEffect( ()=>{
+        async function fetchData(){
+            const getSchedule = () =>{
+                return axios.get("https://localhost:8000/schedules/"+params['name'])
+            }
+            let schedule =await getSchedule()
+            const moduleList = []
+            const getModuleList = () =>{
+                for (const i in schedule.data){
+                    if (i == "scheduleModuleList"){
+                        for (const j in schedule.data[i]){
+                            moduleList.push(schedule.data[i][j])
+                        }
 
+                    }
+                }
+            }
+            getModuleList()
+            const getQuestionById = async (id) =>{
+                return axios.get("https://localhost:8000/questions/"+id)
+            }
+            //console.log(moduleList)
+            const questionIdList = []
+            const moduleType = []
+            const questionInfo = []
+            const moduleInfo = []
+            const deserializeSchedule = () =>{
+                moduleList.forEach(async (module)=>{
+                    moduleType.push({
+                        "moduleType":module["moduleType"]
+                    })
+                    questionIdList.push({
+                        "questionIdList":module["questionIdList"]
+                    })
+                    //console.log(questionIdList)
+                })
+
+                async function deserializeQuestion(){
+                    for (let questionList of questionIdList){
+                        let questionInfo = []
+                        //console.log(questionList["questionIdList"])
+                        for (let id of questionList["questionIdList"]){
+                            //console.log(id)
+                            let question = await getQuestionById(id)
+                            //console.log(question.data)
+                            questionInfo.push({
+                                "@type":question.data["@type"],
+                                "alias":question.data["alias"],
+                                "questionChoiceType":question.data["questionChoiceType"],
+                                "id":question.data["id"]
+                            })
+                        }
+                        moduleInfo.push(questionInfo)
+                        //console.log(moduleInfo)
+                        //setQuestion(moduleInfo)
+                    }
+                    let table = []
+                    const makeTable = (item) =>{
+                        for (const i in item){
+                            console.log(item[i])
+                            table.push(<div style={{marginLeft:"6rem", marginRight:"6rem", height:"33rem"}}>
+                                <h1>ModuleType:{moduleType[i]["moduleType"]}</h1>
+                                <Table data={item[i]}>
+                                    <Column  width={300} sort="true" fixed="true" resizable>
+                                        <HeaderCell>type</HeaderCell>
+                                        <Cell dataKey="@type" />
+                                    </Column>
+                                    <Column  width={100} sort="true" fixed="true" resizable>
+                                        <HeaderCell>alias</HeaderCell>
+                                        <Cell dataKey="alias" />
+                                    </Column>
+                                    <Column  width={300} sort="true" fixed="true" resizable>
+                                        <HeaderCell>questionChoiceType</HeaderCell>
+                                        <Cell dataKey="questionChoiceType" />
+                                    </Column>
+                                    <Column  width={300} sort="true" fixed="true" resizable>
+                                        <HeaderCell>Edit</HeaderCell>
+                                        <EditQuestion dataKey="id" />
+                                    </Column>
+                                </Table>
+                            </div>)
+                        }
+                        //makeTable(moduleInfo)
+                        setTableList(table)
+                    }
+                    makeTable(moduleInfo)
+                }
+                deserializeQuestion()
+            }
+            deserializeSchedule()
+        }
+        fetchData()
+
+    },[])
     return(<div>
-        {data}
+        <p style={{background:"#F6D420",height:"80px",marginLeft:"160px",borderRadius:"32px"}}></p>
+
+        {tableList}
+        <p style={{background:"#F6D420",height:"80px",marginRight:"160px",marginTop:"3rem",borderRadius:"32px"}}></p>
+
     </div>)
 
 }
-
-
-// class ShowSchedules extends React.Component{
-//     constructor(props) {
-//         super(props);
-//         this.state={
-//             url:"http://localhost:8000/schedules",
-//             schedule:[],
-//             aliasList:[],
-//             moduleList:[],
-//             sGroup:null,
-//             sType:null,
-//             selectList:[],
-//             mQuestions:[]
-//         }
-//
-//         this.getSchedules();
-//     }
-//
-//     getQuestionsfromSchedule(v){
-//         for (let i=0; i<this.state.schedule.length;i++ ){
-//             for (const x in this.state.schedule[i]){
-//                 if (x == 'scheduleModuleList'){
-//                     for (const y in this.state.schedule[i][x]){
-//
-//                         this.state.moduleList.push(<button style={{height:"2.5rem",width:"10rem",background:"#5561FF",color:"#FFFFFF",borderRadius:"1rem"}}
-//                                                            onClick={this.getQuestionsfromSchedule(y)}>{y}</button>)
-//
-//                     }
-//                 }
-//             }
-//         }
-//     }
-//
-//
-//     blankmQuestions(){
-//         this.state.mQuestions=[]
-//     }
-//
-//     blankSchedule(){
-//         this.state.moduleList=[]
-//     }
-//
-//     getSchedules=()=>{
-//         console.log(this.props.history)
-//         axios.get("http://localhost:8000/schedules",{headers: {'Content-Type': 'application/json'}}).then((res)=>{
-//             //console.log(res.data)
-//             this.state.schedule=res.data
-//             console.log(this.state.schedule)
-//             this.blankSchedule()
-//             for (let i=0; i<this.state.schedule.length;i++ ){
-//                 for (const x in this.state.schedule[i]){
-//                     if (x == 'scheduleModuleList'){
-//                         for (const y in this.state.schedule[i][x]){
-//
-//                             this.blankmQuestions()
-//                             for (const z in this.state.schedule[i][x][y]){
-//                                 if (z == 'questionIdList'){
-//                                     for (const a in this.state.schedule[i][x][y][z]){
-//                                         this.state.mQuestions.push(<button style={{height:"2.5rem",width:"10rem",background:"#5561FF",color:"#FFFFFF",borderRadius:"1rem"}}>{"question"+a}</button>)
-//                                     }
-//
-//                                 }
-//                             }
-//                             this.setState({
-//                                 mQuestions:this.state.mQuestions
-//                             })
-//                             //console.log(this.state.mQuestions)
-//                             this.state.moduleList.push(<div>
-//                                 <div style={{float:"left"}}>
-//                                     <button style={{height:"2.5rem",width:"10rem",background:"#5561FF",color:"#FFFFFF",borderRadius:"1rem"}}
-//                                     >{"module"+y}</button>
-//                                 </div>
-//                                 <div style={{marginLeft:"30rem"}}>
-//                                     {this.state.mQuestions}
-//                                 </div>
-//                                 <p style={{height:"3rem"}}></p>
-//                             </div>)
-//                         }
-//                     }
-//                 }
-//             }
-//             this.setState({
-//                 moduleList:this.state.moduleList
-//             })
-//             console.log(this.props.location)
-//         })
-//     }
-//
-//
-//     showQuestions=()=>{
-//         console.log(this.state.mQuestions)
-//         return(
-//             <ul>
-//                 {this.state.mQuestions}
-//             </ul>
-//         )
-//
-//
-//     }
-//
-//     blankList(){
-//         this.state.aliasList=[]
-//     }
-//     getQuestions=()=>{
-//
-//         axios.get("http://localhost:8000/questions").then((res)=>{
-//             this.state.questionList=res.data;
-//             console.log(this.state.questionList)
-//             this.blankList()
-//             for (let i=0;i<this.state.questionList.length;i++){
-//                 for(const x in this.state.questionList[i]){
-//                     if (x == 'alias'){
-//                         this.state.aliasList.push(this.state.questionList[i][x])
-//                     }
-//                 }
-//                 this.setState({
-//                     aliasList:this.state.aliasList,
-//                 })
-//                 console.log(this.state.aliasList)
-//             }
-//
-//         })
-//     }
-//
-//
-//     onChangeCheck = selectList => {
-//         this.setState({
-//             selectList,
-//             checkAll: selectList.length === this.state.aliasList.length,
-//         });
-//     };
-//
-//
-//
-//
-//     render() {
-//         return(<div>
-//             <p style={{background:"#F6D420",height:"80px",marginLeft:"160px",borderRadius:"32px"}}>
-//             </p>
-//             <div style={{height:"100%",borderColor:"grey",width:"3rem"}}>
-//                 <h1 style={{marginLeft:"1rem",width:"15rem"}}>
-//                     Test
-//                 </h1>
-//                 <div style={{float:"left"}}>
-//                     <ul>
-//                         {this.state.moduleList}
-//                     </ul>
-//                 </div>
-//                 <div style={{marginLeft:"34rem"}}>
-//
-//
-//
-//                 </div>
-//             </div>
-//
-//
-//         </div>)
-//     }
-// }
-//
-// export default withRouter(ShowSchedules)

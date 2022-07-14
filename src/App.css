@@ -37,3 +37,17 @@
   }
 }
 
+.ant-table.ant-table {
+  bordered:none;
+  width: border-box;
+}
+
+.ant-table.ant-table .ant-table-tbody > tr > td {
+  border:1px solid;
+  width:auto;
+  ;
+}
+
+
+
+

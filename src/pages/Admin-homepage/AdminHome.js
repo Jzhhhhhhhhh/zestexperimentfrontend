@@ -1,168 +1,168 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
-import Qs from 'qs';
-import { useRef, useState } from 'react'
-import { AxiosProvider, Request, Get, Delete, Head, Post, Put, Patch, withAxios } from 'react-axios'
-import {createSearchParams, Link, Router, withRouter} from "react-router-dom";
-import Admin from "../Admin-pwd/Admin";
+import {Link} from "react-router-dom";
+import { Button, IconButton, ButtonGroup, ButtonToolbar } from 'rsuite';
+import { Table, Column, HeaderCell, Cell} from 'rsuite-table';
+//import { Column, Cell, HeaderCell, Pagination, ActionCell } from 'rsuite-enhanced';
+import 'rsuite-table/dist/css/rsuite-table.css';
 
+export default function AdminHome(){
+    const [finished, setFinished] = useState()
+    const [scheduleTable, setScheduleTable] = useState()
+    const [questionTable, setQuestionTable] = useState()
+    const [actionCell, setActionCell] = useState()
+    const EditSchedule = ({ rowData, dataKey, ...props }) => {
+        return(<Cell {...props}>
+            <Link to={"/showSchedule/"+ rowData[dataKey]}>
+                <button>Edit</button>
+            </Link>
+        </Cell>)
 
+    }
+    const EditQuestion = ({rowData,dataKey,...props}) =>{
+        return(<Cell {...props}>
+            <Link to={"/showQuestion/"+ rowData[dataKey]}>
+                <button>Edit</button>
+            </Link>
+        </Cell>)
+    }
 
-class AdminHome extends React.Component{
-    constructor(props) {
-        super(props);
-        const {content} = this.props
-        this.state = {
-            url: "http://localhost:8000/questions",
-            message:null,
-            ques:1,
-            questionList:[],
-            aliasList:[],
-            scheduleList:[],
-            finished:0,
+    // const DeleteScheduleCell = ({ rowData, dataKey, ...props }) => {
+    //     function deleteSchedule (url) {
+    //         //axios.delete("http://localhost:8000/schedules/"+url)
+    //         console.log(rowData[dataKey])
+    //     }
+    //     return(<Cell {...props}>
+    //             <button onClick={console.log("fsa")}>Delete</button>
+    //     </Cell>)
+    //
+    // }
+    // const DeleteQuestionCell = ({ rowData, dataKey, ...props }) => {
+    //     const deleteQuestion = (url) => {
+    //         axios.delete("http://localhost:8000/questions/"+url)
+    //     }
+    //     return(<Cell {...props}>
+    //             <button onClick={deleteQuestion(rowData[dataKey])}>Delete</button>
+    //     </Cell>)
+    //
+    // }
+    useEffect(()=>{
+        async function fetchData(){
+            const getFinished = () =>{
+                return axios.get("https://localhost:8000/testees/amount",{params:{finished:"",mode:"pilot"}})
+            }
+            let number = await getFinished()
+            console.log(number.data)
+            const getSchedules = () =>{
+                return axios.get("https://localhost:8000/schedules")
+            }
+            let schedules = await getSchedules()
+            //console.log(schedules.data)
+            const getQuestions = () =>{
+                return axios.get("https://localhost:8000/questions")
+            }
+            let questions = await getQuestions()
+            //console.log(questions.data)
+            const freshFinished = (number) =>{
+                let finishedNumber = number.data
+                let finishedButton = []
+                finishedButton.push(<div style={{textAlign:"right"}}>
+                    <button onClick={getFinished} style={{float:"right",marginRight:"6rem",borderRadius:"1rem",height:"2rem",marginLeft:"2rem",background:"DodgerBlue", color:"white"}}>GetFinished</button>
+                    <p style={{fontSize:"1.5rem"}}>{finishedNumber}</p>
+                    <button style={{float:"right",borderRadius:"1rem",height:"2rem",marginRight:"6rem",marginLeft:"2rem", background:"DodgerBlue", color:"white"}}>Pilot systems results</button>
+                    <button style={{float:"right",borderRadius:"1rem",height:"2rem",marginLeft:"2rem",background:"DodgerBlue", color:"white"}}>Experiment systems results</button>
+
+                </div>)
+                //console.log(finishedNumber)
+                setFinished(finishedButton)
+            }
+
+            const deserializeSchedule = (schedules) =>{
+                console.log(schedules.data)
+                let table = []
+                table.push(<div style={{marginLeft:"6rem",marginRight:"6rem"}}>
+                    <h1>Schedules</h1>
+                    <Link to="/newSchedule">
+                        <button style={{background:"DodgerBlue",borderRadius:"1rem",height:"2rem", color:"white"}}>Add new Schedule</button>
+                    </Link>
+                    <Table data={schedules.data} style={{marginTop:"2rem"}}>
+                        <Column  width={300} sort="true" resizable>
+                            <HeaderCell>type</HeaderCell>
+                            <Cell dataKey="@type" />
+                        </Column>
+                        <Column  width={350} sort="true" resizable>
+                            <HeaderCell>alias</HeaderCell>
+                            <Cell dataKey="alias" />
+                        </Column>
+                        <Column  width={150} sort="true" resizable>
+                            <HeaderCell>scheduleType</HeaderCell>
+                            <Cell dataKey="scheduleType" />
+                        </Column>
+                        <Column  width={150} sort="true" resizable>
+                            <HeaderCell>testGroup</HeaderCell>
+                            <Cell dataKey="testGroup" />
+                        </Column>
+                        <Column  width={100} sort="true" resizable>
+                            <HeaderCell>Edit</HeaderCell>
+                            <EditSchedule dataKey={"id"}></EditSchedule>
+                        </Column>
+                        {/*<Column  width={100} sort="true" resizable>*/}
+                        {/*    <HeaderCell>Delete</HeaderCell>*/}
+                        {/*    <DeleteScheduleCell dataKey={"id"}></DeleteScheduleCell>*/}
+                        {/*</Column>*/}
+                    </Table>
+                </div>)
+                setScheduleTable(table)
+            }
+            const deserializeQuestion = (questions) =>{
+                console.log(questions.data)
+                let table = []
+                table.push(<div style={{marginLeft:"6rem",marginRight:"6rem"}}>
+                    <h1>Questions</h1>
+                    <Link to="/newQuestions">
+                        <button style={{background:"DodgerBlue",borderRadius:"1rem",height:"2rem", color:"white"}}>Add new Question</button>
+                    </Link>
+                    <Table data={questions.data} style={{marginTop:"2rem"}}>
+                        <Column  width={300} sort="true" resizable>
+                            <HeaderCell>type</HeaderCell>
+                            <Cell dataKey="@type" />
+                        </Column>
+                        <Column  width={650} sort="true" resizable>
+                            <HeaderCell>alias</HeaderCell>
+                            <Cell dataKey="alias" />
+                        </Column>
+                        <Column  width={100} sort="true" resizable>
+                            <HeaderCell>Edit</HeaderCell>
+                            <EditQuestion dataKey="id" />
+                        </Column>
+                        {/*<Column  width={100} sort="true" resizable>*/}
+                        {/*    <HeaderCell>Delete</HeaderCell>*/}
+                        {/*    <DeleteQuestionCell dataKey={"id"}></DeleteQuestionCell>*/}
+                        {/*</Column>*/}
+                    </Table>
+                </div>)
+                setQuestionTable(table)
+            }
+            freshFinished(number)
+            deserializeSchedule(schedules)
+            deserializeQuestion(questions)
         }
-        this.getQuestions()
-    }
-    getFinished=()=>{
-        axios.get("http://localhost:8000/testees/amount",{params:{finished:"",mode:"pilot"}}).then((res)=>{
-            this.setState({
-                finished:res.data
-            })
-            console.log(this.state.finished)
-        })
-    }
+        fetchData()
+    },[])
 
 
-    blankList(){
-        this.state.aliasList=[]
-    }
-    getQuestions=()=>{
-        this.getSchedules()
-        axios.get("http://localhost:8000/questions").then((res)=>{
-            this.state.questionList=res.data;
-            console.log(this.state.questionList)
-            this.blankList()
-            for (let i=0;i<this.state.questionList.length;i++){
-                for(const x in this.state.questionList[i]){
-                    if (x == 'alias'){
-                        this.state.aliasList.push(
-                            <Link to="/showQuestion">
-                                <button style={{marginLeft:"2rem",background:"#5561FF",color:"#FFFFFF",width:"25rem",height:"50px",borderRadius:"8px"}} key={x}
-                                >{this.state.questionList[i][x]}</button>
-                            </Link>
-                            )
-                    }
-                }
-                this.setState({
-                    aliasList:this.state.aliasList,
-                })
-                console.log(this.state.aliasList)
-            }
+    return(<div>
+        <p style={{background:"#F6D420",height:"80px",marginLeft:"160px",borderRadius:"32px"}}></p>
+        {/*<link to={"/evaluation"}>*/}
+        {/*<button>*/}
+        {/*    linklink*/}
+        {/*</button>*/}
+        {/*</link>*/}
+        {finished}
+        {scheduleTable}
+        {questionTable}
+        <p style={{background:"#F6D420",height:"80px",marginRight:"160px",marginTop:"3rem",borderRadius:"32px"}}></p>
 
-        })
-    }
-    blankSchedule(){
-        this.state.scheduleList=[]
-    }
-
-    getSchedules=()=>{
-        axios.get("http://localhost:8000/schedules",{headers: {'Content-Type': 'application/json'}}).then((res)=>{
-            this.state.schedule=res.data
-            this.blankSchedule()
-            for (let i=0; i<this.state.schedule.length;i++ ){
-                for (const x in this.state.schedule[i]){
-                    if (x == 'alias'){
-                        for (const y in this.state.schedule[i]){
-                            if (y == 'id'){
-                                this.state.url = this.state.schedule[i][y]
-                            }
-                        }
-                        this.state.scheduleList.push(
-                            <Link to={"/showSchedule/"+ this.state.url}>
-                            <button style={{marginLeft:"0.8rem",background:"#5561FF",color:"#FFFFFF",width:"25rem",height:"50px",borderRadius:"8px"}} key={x}>{this.state.schedule[i][x]}</button>
-                            </Link>)
-
-                    }
-                }
-            }
-            this.setState({
-                scheduleList:this.state.scheduleList
-            })
-            console.log(res.data)
-        })
-    }
-
-
-
-    render(){
-        return(
-            <div style={{height:"100%"}}>
-                <p style={{background:"#F6D420",height:"80px",marginLeft:"160px",borderRadius:"32px"}}></p>
-                <div style={{float:"left"}}>
-                    <div style={{marginLeft:"10rem"}}>
-                        <p style={{fontSize:"3rem"}}>
-                            Exports
-                        </p>
-                        <div style={{whiteSpace:"pre-wrap",background:"#F5F5F5",height:"12rem",width:"33rem",borderRadius:"2rem"}}align="centre">
-
-                            <button style={{marginTop:"1.5rem",color:"white",fontSize:"2.3rem",background:"#008B00",height:"9rem",width:"9rem",paddingTop:"0.5rem",marginLeft:"2rem",borderRadius:"1rem",float:"left",textAlign:"center"}}
-                            onClick={this.getFinished}>
-                                <b>{this.state.finished}</b>
-                                Finish
-                            </button>
-                            <p style={{width:"100%",height:"2rem"}}></p>
-                            <button style={{background:"yellow",height:"3.5rem",align:"center",marginLeft:"1rem",borderRadius:"1rem",width:"20rem",Left:"1rem",fontSize:"1rem",textAlign:"center"}}>
-                                pilot systems results</button>
-                            <button style={{background:"blue",height:"3.5rem",color:"white",marginLeft:"1rem",borderRadius:"1rem",width:"20rem",fontSize:"1rem",textAlign:"center"}}>
-                                formal systems results</button>
-
-
-
-                        </div>
-                        <div >
-                            <p style={{fontSize:"3rem"}}>
-                                Experiment Schedules</p>
-                            <div style={{whiteSpace:"pre-wrap",background:"#F5F5F5",height:"50rem",width:"33rem",borderRadius:"2rem"}}>
-                                <p style={{height:"1rem"}}></p>
-                                <ul style={{minHeight:"80vh"}}>{this.state.scheduleList}</ul>
-                                <Link to="/newSchedule">
-                                    <button  id="continue" style={{marginLeft:"3.3rem",background:"#5561FF",color:"#FFFFFF",width:"25rem",height:"50px",borderRadius:"8px"}}>
-                                        New Schedules
-                                    </button>
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <p style={{width:"100%",height:"0.1rem"}}></p>
-                    <p style={{marginLeft:"48rem",fontSize:"3rem"}}>
-                        All Questions</p>
-                    <div style={{marginLeft:"48rem",background:"#F5F5F5",height:"71.5rem",width:"33rem",borderRadius:"2rem"}}>
-                        <p style={{height:"1rem"}}></p>
-                        <ul style={{minHeight:"123vh"}}>
-                            {this.state.aliasList}
-                        </ul>
-                        <Link to="/newQuestions">
-                            <button  id="continue" style={{marginLeft:"4.5rem",background:"#5561FF",color:"#FFFFFF",width:"25rem",height:"50px",borderRadius:"8px"}}>
-                                New Questions
-                            </button>
-                        </Link>
-                    </div>
-                </div>
-                <p style={{background:"#F6D420",height:"80px",marginRight:"160px",marginTop:"3rem",borderRadius:"32px"}}></p>
-            </div>
-
-        )
-    }
+    </div>)
 
 }
-
-export default AdminHome
-
-
-
-
-
-
-

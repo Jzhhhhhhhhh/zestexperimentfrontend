@@ -21,7 +21,7 @@ function Welcome(){
 
         </p>
         <p align="center">
-            <Link to="/">
+            <Link to="/about">
                 <button style={{background:"#5561FF",color:"#FFFFFF",width:"160px",height:"50px",borderRadius:"8px"}}>
                     About ZEST
                 </button>

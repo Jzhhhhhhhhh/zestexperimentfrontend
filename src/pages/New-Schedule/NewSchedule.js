@@ -1,250 +1,198 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Checkbox} from "antd";
-import {Link} from "react-router-dom";
+import { Divider, Radio, Table } from 'antd';
+import 'antd/dist/antd.css'
+
+import type, { ColumnsType } from 'antd/es/table';
+const { Column } = Table
 const CheckboxGroup = Checkbox.Group;
-
-class NewSchedule extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state={
-            url:"http://localhost:8000/schedules",
-            schedule:[],
-            aliasList:[],
-            moduleList:[],
-            sGroup:null,
-            sType:"PILOT",
-            selectList:[],
-            sAlias:null,
-            sCount:0,
-            type1:"EarlyStoppingSchedule",
-            moduleButton:[],
-            choices:[],
-            counting:0
+export default function NewSchedule(){
+    const [questionTable, setQuestionTable] = useState()
+    const [aliasInput, setAliasInput] = useState()
+    const [alias, setAlias] = useState()
+    const [scheduleTypeInput, setScheduleTypeInput] = useState()
+    const [scheduleType, setScheduleType] = useState()
+    const [scheduleModuleListInput, setScheduleModuleListInput] = useState()
+    const [scheduleModuleList, setScheduleModuleList] = useState()
+    const [testGroupInput, setTestGroupInput] = useState()
+    const [testGroup, setTestGroup] = useState()
+    const [stoppingCountInput, setStoppingCountInput] = useState()
+    const [stoppingCount, setStoppingCount] = useState()
+    const [typeInput, setTypeInput] = useState()
+    const [type, setType] = useState()
+    const [questionIdList, setQuestionIdList] = useState()
+    const [moduleTypeInput, setModuleTypeInput] = useState()
+    const [moduleType, setModuleType] = useState()
+    const [schedule, setSchedule] = useState()
+    const [scheduleInput, setScheduleInput] = useState()
+    const columns = [
+        {
+            title: 'type',
+            dataIndex: '@type'
+        },
+        {
+            title: 'alias',
+            dataIndex: 'alias'
+        },
+        {
+            title: 'Text',
+            dataIndex: 'questionText'
         }
-    }
-
-    blankSchedule(){
-        this.state.moduleList=[]
-    }
-
-    getSchedules=()=>{
-        axios.get("http://localhost:8000/schedules",{headers: {'Content-Type': 'application/json'}}).then((res)=>{
-            console.log(res.data)
-            this.state.schedule=res.data
-            this.blankSchedule()
-            for (let i=0; i<this.state.schedule.length;i++ ){
-                for (const x in this.state.schedule[i]){
-                    if (x == 'scheduleModuleList'){
-                        for (const y in this.state.schedule[i][x]){
-                            this.state.moduleList.push(<button style={{height:"3rem",marginLeft:"-1.5rem",width:"15rem",background:"#5561FF",color:"#FFFFFF",borderRadius:"1rem"}}>{y}</button>)
-                        }
-                    }
-                }
+    ]
+    const rowSelection = {
+        onChange: (selectedRowKeys, selectedRows) => {
+            const idList = []
+            //console.log(selectedRows)
+            for (const i in selectedRows){
+                //console.log(selectedRows[i])
+                idList.push(selectedRows[i]["id"])
             }
-            this.setState({
-                moduleList:this.state.moduleList
-            })
-            console.log(this.state.moduleList)
-        })
-    }
-
-    blankList(){
-        this.state.aliasList=[]
-    }
-    getQuestions=()=>{
-
-        axios.get("http://localhost:8000/questions").then((res)=>{
-            this.state.questionList=res.data;
-            console.log(this.state.questionList)
-            this.blankList()
-            for (let i=0;i<this.state.questionList.length;i++){
-                for(const x in this.state.questionList[i]){
-                    if (x == 'alias'){
-                        this.state.aliasList.push(this.state.questionList[i][x])
-                    }
-                }
-                this.setState({
-                    aliasList:this.state.aliasList,
-                })
-                console.log(this.state.aliasList)
-            }
-
-        })
-    }
-
-    submitSchedules=()=>{
-        if (this.state.type1 == "EarlyStoppingSchedule"){
-            const newSchedule = [{
-                "@type":this.state.type1,
-                "alias":this.state.sAlias,
-                "stoppingCount":this.state.sCount,
-                "scheduleModuleList":this.state.moduleList,
-                "scheduleType":this.state.sType,
-                "testGroup":"testgroup",
-            }]
-            axios.post("http://localhost:8000/schedules",JSON.stringify(newSchedule),{headers: {'Content-Type': 'application/json'}}).then((res) =>{
-                    console.log(res);
-                    this.state.message = res
-                }
-            )
-            console.log(newSchedule)
-        }
-        else if (this.state.type1 == "Schedule"){
-            const newSchedule = [{
-                "@type":this.state.type1,
-                "alias":this.state.sAlias,
-                "scheduleModuleList":this.state.moduleList,
-                "scheduleType":this.state.sType,
-                "testGroup":"testgroup",
-            }]
-            axios.post("http://localhost:8000/schedules",JSON.stringify(newSchedule),{headers: {'Content-Type': 'application/json'}}).then((res) =>{
-                    console.log(res);
-                    this.state.message = res
-                }
-            )
-            console.log(newSchedule)
-        }
-
-    }
-
-    onChangeCheck = selectList => {
-        this.setState({
-            selectList,
-        });
+            //console.log(idList)
+            setQuestionIdList(idList)
+        },
+        getCheckboxProps: (record) => ({
+            disabled: record.name === 'Disabled User',
+            // Column configuration not to be checked
+            name: record.name,
+        }),
     };
 
 
-    changeAlias(e){
-        this.setState({
-            sAlias:e.target.value
-        })
-    }
+    useEffect(()=> {
+        async function fetchData() {
+            const getQuestion = () => {
+                return axios.get("https://localhost:8000/questions")
+            }
+            let questions = await getQuestion()
+            const deserializeQuestion = (questions) =>{
+                //console.log(questions.data)
+                let table = []
+                table.push(<div style={{marginLeft:"17rem",marginRight:"6rem",marginTop:"2rem"}}>
+                    <h1 style={{marginTop:"3rem"}}>QuestionList</h1>
+                    <Divider></Divider>
+                    <Table style={{marginTop:"3rem"}} rowKey={record => record.id} rowSelection={{
+                        type: "checkbox",
+                        ...rowSelection,
+                    }}dataSource={questions.data} columns={columns}></Table>
+                </div>)
+                setQuestionTable(table)
+            }
+            const addModule = (questionIdList) =>{
+                deserializeQuestion(questions)
+                console.log(questionIdList)
 
-    changeType1(e){
-        this.setState({
-            type1:e.target.value
-        })
-    }
+            }
+            addModule(questions)
 
-    changesType(e){
-        this.setState({
-            sType:e.target.value
-        })
-    }
-    changeStopping(e){
-        this.setState({
-            sCount:e.target.value
-        })
-    }
-    changeChoices(e){
-        this.setState({
+        }
+        fetchData()
 
-        })
-    }
-
-
-
-
-
-
-
-    addModule=()=>{
-        this.state.counting = this.state.counting+1
-        this.setState({
-            counting:this.state.counting
-        })
-        this.state.moduleButton.push(
-            <button style={{height:"3rem",marginLeft:"1rem",width:"15rem",background:"#5561FF",color:"#FFFFFF",borderRadius:"1rem"}}>{"module"+this.state.counting}</button>
-        )
-        this.state.moduleList.push({
-            "moduleType":"CODE",
-            "questionIdList":this.state.selectList
-        })
-        this.setState({
-            moduleButton:this.state.moduleButton,
-            moduleList:this.state.moduleList
-        })
-    }
-
-
-    render() {
-        return(<div>
-            <p style={{background:"#F6D420",height:"80px",marginLeft:"160px",borderRadius:"32px"}}>
-            </p>
-            <div style={{borderColor:"grey",width:"3rem"}}>
-                <div style={{float:"left"}}>
-                    <h1 style={{marginLeft:"1rem",width:"15rem"}}>
-                        Alias：
-                    </h1>
-                    <input style={{fontSize:"2rem",marginLeft:"1rem",height:"3rem",width:"15rem",borderRadius:"1rem"}}  onChange={this.changeAlias.bind(this)}/>
-
-                    <h1 style={{marginLeft:"1rem",width:"15rem"}}>Type:</h1>
-                    <select style={{fontSize:"1rem",marginLeft:"1rem",height:"3rem",width:"15rem",borderRadius:"1rem"}}
-                            onChange={this.changeType1.bind(this)}>
-                        <option value={"EarlyStoppingSchedule"}>EarlyStoppingSchedule</option>
-                        <option value={"Schedule"}>Schedule</option>
-                    </select>
-                    <h1 style={{marginLeft:"1rem",width:"15rem"}}>
-                        StoppingCount:
-                    </h1>
-                    <input style={{fontSize:"2rem",marginLeft:"1rem",height:"3rem",width:"15rem",borderRadius:"1rem"}}  onChange={this.changeStopping.bind(this)}/>
-
-                    <h1 style={{marginLeft:"1rem",width:"15rem"}}>ScheduleType:</h1>
-                    <select style={{fontSize:"1rem",marginLeft:"1rem",height:"3rem",width:"15rem",borderRadius:"1rem"}}
-                            onChange={this.changesType.bind(this)}>
-                        <option value={"PILOT"}>Pilot</option>
-                        <option value={"EXPERIMENT"}>Experiment</option>
-                    </select>
-                    <ul>
-
-                    </ul>
-                    <p>
-                        {this.state.moduleButton}
-                    </p>
-
-
-                    <button style={{height:"3rem",marginLeft:"1rem",width:"15rem",background:"#5561FF",color:"#FFFFFF",borderRadius:"1rem"}}
-                            onClick={this.getQuestions}>
-                        New Module
-                    </button>
-                    <Link to="/newSchedule">
-                        <button style={{height:"3rem",marginLeft:"1rem",width:"15rem",background:"#5561FF",color:"#FFFFFF",borderRadius:"1rem"}}
-                                onClick={this.addModule}>
-                            Add Module
-                        </button>
-                    </Link>
-                    <Link to={"/adminHomepage"}>
-                        <button style={{height:"3rem",marginLeft:"1rem",width:"15rem",background:"#5561FF",color:"#FFFFFF",borderRadius:"1rem"}}
-                                onClick={this.submitSchedules}>
-                            Add Schedule
-                        </button>
-                    </Link>
-                </div>
-                <div style={{marginLeft:"34rem"}}>
-                    <p style={{height:"0.5rem"}}></p>
-                    <h1 style={{width:"15rem"}}>
-                        Question List
-                    </h1>
-                    <CheckboxGroup
-                        style={{ display: "flex", flexDirection:"column" ,width:"20rem",lineHeight:"2rem"}}
-                        value={this.state.selectList}
-                        onChange={this.onChangeCheck} >
-                        {this.state.aliasList.map(function (item) {
-                            return (
-                                <Checkbox
-                                    key={item} value={item}>
-                                    {item}
-                                </Checkbox>
-                            )
-                        })}
-                    </CheckboxGroup>
-
-                </div>
-            </div>
-            <p style={{background:"#F6D420",height:"80px",marginRight:"160px",marginTop:"60rem",borderRadius:"32px"}}></p>
+        const changeAlias=(e)=>{
+            setAlias(e.target.value)
+        }
+        setAliasInput(<div>
+            <h2>Alias</h2>
+        <input   onChange={changeAlias}/>
         </div>)
-    }
-}
 
-export default NewSchedule
+        const changeScheduleType=(e)=>{
+            setScheduleType(e.target.value)
+        }
+        setScheduleTypeInput(<div>
+            <h2>Schedule Type</h2>
+            <p>PILOT or EXPERIMENT</p>
+            <input   onChange={changeScheduleType}/>
+        </div>)
+
+        const changeTestGroup=(e)=>{
+            setTestGroup(e.target.value)
+        }
+        setTestGroupInput(<div>
+            <h2>Test Group</h2>
+            <input   onChange={changeTestGroup}/>
+        </div>)
+
+        const changeStoppingCount=(e)=>{
+            setStoppingCount(e.target.value)
+        }
+        setStoppingCountInput(<div>
+            <h2>Stopping Count</h2>
+            <p>number or empty</p>
+            <input   onChange={changeStoppingCount}/>
+        </div>)
+
+        const changeType=(e)=>{
+            setType(e.target.value)
+        }
+        setTypeInput(<div>
+            <h2>Type</h2>
+            <p>EarlyStoppingSchedule or Schedule</p>
+            <input   onChange={changeType}/>
+        </div>)
+
+        const changeModuleType=(e)=>{
+            setModuleType(e.target.value)
+        }
+        setModuleTypeInput(<div>
+            <h2>ModuleType</h2>
+            <p>CODE or DEMO</p>
+            <input   onChange={changeModuleType}/>
+        </div>)
+
+        const changeModuleList=()=>{
+            let moduleList = []
+            if (scheduleModuleList){
+                moduleList = scheduleModuleList
+            }
+            moduleList.push({
+                questionIdList:questionIdList,
+                moduleType:moduleType
+            })
+            setScheduleModuleList(moduleList)
+            console.log(scheduleModuleList)
+        }
+        setScheduleModuleListInput(<button style={{width:"7.5rem"}} onClick={changeModuleList}>AddModule</button>)
+
+        const changeSchedule=()=>{
+            setSchedule([{
+                alias:alias,
+                "@type":type,
+                testGroup:testGroup,
+                stoppingCount:stoppingCount,
+                scheduleType:scheduleType,
+                scheduleModuleList:scheduleModuleList
+            }])
+            axios.post("https://localhost:8000/schedules",JSON.stringify(schedule),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
+                console.log(res)
+            })
+            console.log(schedule)
+        }
+        setScheduleInput(<button style={{width:"7.5rem"}} onClick={changeSchedule}>AddSchedule</button>)
+    },[questionIdList,scheduleModuleList,schedule])
+    return(<div><p style={{background:"#F6D420",height:"80px",marginLeft:"160px",borderRadius:"32px"}}></p>
+        <div style={{float:"left",marginLeft:"2rem",height:"10rem",marginTop:"2rem"}}>
+            <h1>NewSchedule</h1>
+            <Divider style={{marginTop:"7.5rem"}}></Divider>
+            <div >
+                {aliasInput}
+                {scheduleTypeInput}
+                {testGroupInput}
+                {stoppingCountInput}
+                {typeInput}
+                {moduleTypeInput}
+            </div>
+
+    </div >
+    <div>
+    {questionTable}
+        <div style={{marginLeft:"75.5rem",marginRight:"9rem"}}>
+            {scheduleModuleListInput}
+        </div>
+        <div style={{marginLeft:"75.5rem",marginRight:"9rem",marginTop:"1rem"}}>
+            {scheduleInput}
+        </div>
+    </div>
+        <p style={{background:"#F6D420",height:"80px",marginRight:"160px",marginTop:"15rem",borderRadius:"32px"}}></p>
+    </div>)
+}
