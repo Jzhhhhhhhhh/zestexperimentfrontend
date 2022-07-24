@@ -12,7 +12,7 @@ export default function NewSchedule(){
     const [aliasInput, setAliasInput] = useState()
     const [alias, setAlias] = useState()
     const [scheduleTypeInput, setScheduleTypeInput] = useState()
-    const [scheduleType, setScheduleType] = useState()
+    const [scheduleType, setScheduleType] = useState("PILOT")
     const [scheduleModuleListInput, setScheduleModuleListInput] = useState()
     const [scheduleModuleList, setScheduleModuleList] = useState()
     const [testGroupInput, setTestGroupInput] = useState()
@@ -20,10 +20,10 @@ export default function NewSchedule(){
     const [stoppingCountInput, setStoppingCountInput] = useState()
     const [stoppingCount, setStoppingCount] = useState()
     const [typeInput, setTypeInput] = useState()
-    const [type, setType] = useState()
+    const [type, setType] = useState("EarlyStoppingSchedule")
     const [questionIdList, setQuestionIdList] = useState()
     const [moduleTypeInput, setModuleTypeInput] = useState()
-    const [moduleType, setModuleType] = useState()
+    const [moduleType, setModuleType] = useState("CODE")
     const [schedule, setSchedule] = useState()
     const [scheduleInput, setScheduleInput] = useState()
     const columns = [
@@ -93,7 +93,7 @@ export default function NewSchedule(){
         }
         setAliasInput(<div>
             <h2>Alias</h2>
-        <input   onChange={changeAlias}/>
+        <input style={{width:"10.8rem"}}onChange={changeAlias}/>
         </div>)
 
         const changeScheduleType=(e)=>{
@@ -101,8 +101,10 @@ export default function NewSchedule(){
         }
         setScheduleTypeInput(<div>
             <h2>Schedule Type</h2>
-            <p>PILOT or EXPERIMENT</p>
-            <input   onChange={changeScheduleType}/>
+            <select style={{width:"10.8rem",height:"1.9rem"}} onChange={changeScheduleType}>
+                <option value={"PILOT"}>PILOT</option>
+                <option value={"EXPERIMENT"}>EXPERIMENT</option>
+            </select>
         </div>)
 
         const changeTestGroup=(e)=>{
@@ -110,7 +112,7 @@ export default function NewSchedule(){
         }
         setTestGroupInput(<div>
             <h2>Test Group</h2>
-            <input   onChange={changeTestGroup}/>
+            <input style={{width:"10.8rem"}} onChange={changeTestGroup}/>
         </div>)
 
         const changeStoppingCount=(e)=>{
@@ -119,7 +121,7 @@ export default function NewSchedule(){
         setStoppingCountInput(<div>
             <h2>Stopping Count</h2>
             <p>number or empty</p>
-            <input   onChange={changeStoppingCount}/>
+            <input style={{width:"10.8rem"}}onChange={changeStoppingCount}/>
         </div>)
 
         const changeType=(e)=>{
@@ -127,8 +129,10 @@ export default function NewSchedule(){
         }
         setTypeInput(<div>
             <h2>Type</h2>
-            <p>EarlyStoppingSchedule or Schedule</p>
-            <input   onChange={changeType}/>
+            <select style={{width:"10.8rem",height:"1.9rem"}} onChange={changeType}>
+                <option value={"EarlyStoppingSchedule"}>EarlyStoppingSchedule</option>
+                <option value={"Schedule"}>Schedule</option>
+            </select>
         </div>)
 
         const changeModuleType=(e)=>{
@@ -136,8 +140,10 @@ export default function NewSchedule(){
         }
         setModuleTypeInput(<div>
             <h2>ModuleType</h2>
-            <p>CODE or DEMO</p>
-            <input   onChange={changeModuleType}/>
+            <select style={{width:"10.8rem",height:"1.9rem"}} onChange={changeModuleType}>
+                <option value={"CODE"}>CODE</option>
+                <option value={"DEMO"}>DEMO</option>
+            </select>
         </div>)
 
         const changeModuleList=()=>{
@@ -182,7 +188,6 @@ export default function NewSchedule(){
                 {typeInput}
                 {moduleTypeInput}
             </div>
-
     </div >
     <div>
     {questionTable}

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, ReactPropTypes} from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
 import { Button, IconButton, ButtonGroup, ButtonToolbar } from 'rsuite';
@@ -26,7 +26,6 @@ export default function AdminHome(){
             </Link>
         </Cell>)
     }
-
     // const DeleteScheduleCell = ({ rowData, dataKey, ...props }) => {
     //     function deleteSchedule (url) {
     //         //axios.delete("http://localhost:8000/schedules/"+url)
@@ -84,6 +83,10 @@ export default function AdminHome(){
                     <h1>Schedules</h1>
                     <Link to="/newSchedule">
                         <button style={{background:"DodgerBlue",borderRadius:"1rem",height:"2rem", color:"white"}}>Add new Schedule</button>
+                    </Link>
+                    <Link to={{pathname: "/pilot/"+"dsgg"}}>//invitationid
+                        <button style={{background:"DodgerBlue",borderRadius:"1rem",height:"2rem", color:"white"}}
+                        onClick={()=>{this.props.history.push({pathname:"/pilot",query:{text:"dagsf"}})}}>Evaluation</button>
                     </Link>
                     <Table data={schedules.data} style={{marginTop:"2rem"}}>
                         <Column  width={300} sort="true" resizable>
