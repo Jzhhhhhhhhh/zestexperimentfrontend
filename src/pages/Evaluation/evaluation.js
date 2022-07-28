@@ -16,8 +16,11 @@ class Evaluation extends React.Component{
         console.log(window.location.href)
     }
     componentDidMount(){
+        let href = window.location.href
+        let index = href.lastIndexOf("\/");
+        let str = href.substring(index + 1,href.length);
 
-        Axios.post(this.state.url,[],{withCredentials: true}).then((res) => {
+        Axios.post(this.state.url+'/'+str,[],{withCredentials: true}).then((res) => {
             this.setQuestion(res.data);
             console.log(res.data);
         }).catch((error) => {

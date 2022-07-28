@@ -26,7 +26,7 @@ export default function App() {
                 <Route path="/newSchedule" element={<NewSchedule></NewSchedule>}/>
                 <Route path="/showSchedule/:name" element={<ShowSchedules></ShowSchedules>}/>
                 <Route path="/showQuestion/:name" element={<ShowQuestion></ShowQuestion>}/>
-                <Route path={"/pilot/:invitationId"} element={<Evaluation mode={"pilot"}></Evaluation>}/>
+                <Route path="/pilot/:invitationId" element={<Evaluation mode={"pilot"}></Evaluation>}/>
             </Routes>
         </Router>
     )
