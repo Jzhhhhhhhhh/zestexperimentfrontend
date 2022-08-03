@@ -43,21 +43,21 @@ export default function AdminHome(){
 
         async function fetchData(){
             const getFinished = () =>{
-                return axios.get("https://localhost:8000/testees/amount",{params:{finished:"",mode:"pilot"}})
+                return axios.get("https://localhost:8443/testees/amount",{params:{finished:"",mode:"pilot"}})
             }
             let number = await getFinished()
             console.log(number.data)
             const getSchedules = () =>{
-                return axios.get("https://localhost:8000/schedules")
+                return axios.get("https://localhost:8443/schedules")
             }
             let schedules = await getSchedules()
             //console.log(schedules.data)
             const getQuestions = () =>{
-                return axios.get("https://localhost:8000/questions")
+                return axios.get("https://localhost:8443/questions")
             }
             let questions = await getQuestions()
             const getInvitation = () =>{
-                return axios.get("https://localhost:8000/invitations")
+                return axios.get("https://localhost:8443/invitations")
             }
             let invitations = await getInvitation()
             console.log(invitations.data)
@@ -66,7 +66,7 @@ export default function AdminHome(){
                 let finishedNumber = number.data
                 let finishedButton = []
                 const exportPILOT = () =>{
-                    axios.get("https://localhost:8000/csv/",{params:{mode:"PILOT"}}).then((res) =>{
+                    axios.get("https://localhost:8443/csv",{params:{mode:"pilot"}}).then((res) =>{
                         console.log(res.data)
                     })
                 }
@@ -179,7 +179,7 @@ export default function AdminHome(){
         let data = {
             source:invitation
         }
-        axios.post("https://localhost:8000/invitations",JSON.stringify(data),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
+        axios.post("https://localhost:8443/invitations",JSON.stringify(data),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
             console.log(res)
         })
     }

@@ -1,26 +1,28 @@
 import React from 'react'
 import CodeEvaluation from './questions/code_evaluation'
 import Axios from 'axios'
-import {Box, CircularProgress} from "@mui/material";
+import {Box, CircularProgress, Paper} from "@mui/material";
 import BareQuestion from "./questions/bare_question";
+import 'highlight.js/styles/atom-one-dark-reasonable.css';
 
 class Evaluation extends React.Component{
     constructor(props) {
         super(props);
+        let href = window.location.href
+        let index = href.lastIndexOf("\/");
+        let invitation_id = href.substring(index + 1,href.length);
         this.state = {
             done: false,
             mode: this.props.mode,
-            url: 'https://localhost:8000/' + this.props.mode,
+            url: 'https://localhost:8443/' + this.props.mode + '/' + invitation_id,
             questionEntities: null,
         }
         console.log(window.location.href)
     }
     componentDidMount(){
-        let href = window.location.href
-        let index = href.lastIndexOf("\/");
-        let str = href.substring(index + 1,href.length);
 
-        Axios.post(this.state.url+'/'+str,[],{withCredentials: true}).then((res) => {
+
+        Axios.post(this.state.url,[],{withCredentials: true}).then((res) => {
             this.setQuestion(res.data);
             console.log(res.data);
         }).catch((error) => {
@@ -62,11 +64,12 @@ class Evaluation extends React.Component{
 
     render(){
         return(
-            <div style={{ width: '100%' ,height:'100%'}}>
-                <div align={"center"}>
-                    <h1>This is the evaluation process</h1>
-                </div>
-                {this.processQuestions()}
+            <div >
+                <Box sx={{margin:10, outline:1}}>
+                    <Paper sx={{borderRadius:5,padding:2}} elevation={3}>
+                        {this.processQuestions()}
+                    </Paper>
+                </Box>
             </div>
         )
     ;}

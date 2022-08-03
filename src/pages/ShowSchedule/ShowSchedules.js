@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import axios from "axios";
-import {Link, useParams, withRouter} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import 'rsuite-table/dist/css/rsuite-table.css';
 
@@ -17,13 +17,13 @@ export default function ShowSchedules(){
     useEffect( ()=>{
         async function fetchData(){
             const getSchedule = () =>{
-                return axios.get("https://localhost:8000/schedules/"+params['name'])
+                return axios.get("https://localhost:8443/schedules/"+params['name'])
             }
             let schedule =await getSchedule()
             const moduleList = []
             const getModuleList = () =>{
                 for (const i in schedule.data){
-                    if (i == "scheduleModuleList"){
+                    if (i === "scheduleModuleList"){
                         for (const j in schedule.data[i]){
                             moduleList.push(schedule.data[i][j])
                         }
@@ -33,12 +33,11 @@ export default function ShowSchedules(){
             }
             getModuleList()
             const getQuestionById = async (id) =>{
-                return axios.get("https://localhost:8000/questions/"+id)
+                return axios.get("https://localhost:8443/questions/"+id)
             }
             //console.log(moduleList)
             const questionIdList = []
             const moduleType = []
-            const questionInfo = []
             const moduleInfo = []
             const deserializeSchedule = () =>{
                 moduleList.forEach(async (module)=>{
