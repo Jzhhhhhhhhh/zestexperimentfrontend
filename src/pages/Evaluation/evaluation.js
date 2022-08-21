@@ -9,7 +9,7 @@ class Evaluation extends React.Component{
     constructor(props) {
         super(props);
         let href = window.location.href
-        let index = href.lastIndexOf("\/");
+        let index = href.lastIndexOf("/");
         let invitation_id = href.substring(index + 1,href.length);
         this.state = {
             done: false,
