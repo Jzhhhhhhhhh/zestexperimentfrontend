@@ -65,7 +65,7 @@ class Evaluation extends React.Component{
     render(){
         return(
             <div >
-                <Box sx={{margin:10, outline:1}}>
+                <Box sx={{margin:3, outline:1,display:'flex', flexDirection:'column'}}>
                     <Paper sx={{borderRadius:5,padding:2}} elevation={3}>
                         {this.processQuestions()}
                     </Paper>

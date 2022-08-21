@@ -45,17 +45,18 @@ class CodeEvaluation extends React.Component{
                 width: '100%',
                 display: 'flex', flexDirection: 'row', alignItems: 'center',
                 justifyContent: 'center',}}>
-                <Paper  sx={{borderRadius:5, backgroundColor:'#282c34', width:'50%',margin:4}} elevation={5}>
-                    <Box sx={{margin:'5vh', }}>
-                        <h1 style={{color:'#FFFFFF'}}>Please read the following code snippet</h1>
+                <Paper  sx={{borderRadius:5, backgroundColor:'#282c34', width:'75%'}} elevation={5}>
+                    <Box sx={{marginTop:2,marginLeft:2 }}>
+                        <h2 style={{color:'#FFFFFF'}}>Please read the following code snippet</h2>
                     </Box>
-                    <Box sx={{display: 'flex', flexDirection: 'column', height: '60vh', margin:3, justifyContent:"center",paddingBottom:0, paddingRight:0,
+                    <Box sx={{display: 'flex', flexDirection: 'column', height: '60vh', margin:2, justifyContent:"center",paddingBottom:0, paddingRight:0,
                         "*::-webkit-scrollbar": {
                             width: 20,
+
                         },
                         "*::-webkit-scrollbar-track": {
                             backgroundColor: "#888888",
-                            borderRadius: 1
+                            borderRadius: 1,
                         },
                         "*::-webkit-scrollbar-thumb": {
                             backgroundColor: "black",
@@ -68,7 +69,7 @@ class CodeEvaluation extends React.Component{
                             </pre>
                     </Box>
                 </Paper>
-                <Box sx={{display: 'flex', flexDirection: 'column', p: 3, m: 3, width: '50%'}}>
+                <Box sx={{display: 'flex', flexDirection: 'column', width: '25%'}}>
                     <Box >
                         <BareQuestion key={this.props.questionEntities[0].id + "bare"} url={this.props.url} questionEntities={this.props.questionEntities}
                                       getNewQuestions={this.props.getNewQuestions}/>

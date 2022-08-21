@@ -66,11 +66,12 @@ class BareQuestion extends React.Component{
         for(let i = 0; i < this.props.questionEntities.length; i ++) {
             const question_type = this.props.questionEntities[i].questionChoiceType;
             let question_choices_tags;
+            let question_margin = 4;
             switch (question_type) {
                 case 'SCALE_CHOICE': {
                     const questionChoices = this.props.questionEntities[i].questionChoices;
                     question_choices_tags =
-                        <Box key={this.props.questionEntities[i].alias + this.props.questionEntities[i].key}>
+                        <Box key={this.props.questionEntities[i].alias + this.props.questionEntities[i].key} sx={{marginBottom:question_margin}}>
                             <h2>{this.props.questionEntities[i].questionText}</h2>
                             <FormControl>
                                 <RadioGroup
@@ -81,7 +82,7 @@ class BareQuestion extends React.Component{
                                 >
                                     {
                                         questionChoices.map((choice) =>
-                                            <FormControlLabel value={choice}  labelPlacement={"bottom"} control={<Radio/>} label={choice}/>)
+                                            <FormControlLabel value={choice}  sx={{margin:0}} labelPlacement={"bottom"} control={<Radio/>} label={choice}/>)
                                     }
                                 </RadioGroup>
                             </FormControl>
@@ -93,7 +94,7 @@ class BareQuestion extends React.Component{
                 case 'SINGLE_CHOICE': {
                     const questionChoices = this.props.questionEntities[i].questionChoices;
                     question_choices_tags =
-                        <Box key={this.props.questionEntities[i].alias + this.props.questionEntities[i].key}>
+                        <Box key={this.props.questionEntities[i].alias + this.props.questionEntities[i].key} sx={{marginBottom:question_margin}}>
                             <h2>{this.props.questionEntities[i].questionText}</h2>
                             <FormControl>
                                 <RadioGroup
@@ -114,7 +115,7 @@ class BareQuestion extends React.Component{
                 }
                 case 'TEXT': {
                     question_choices_tags =
-                        <Box key={this.props.questionEntities[i].alias + this.props.questionEntities[i].key}>
+                        <Box key={this.props.questionEntities[i].alias + this.props.questionEntities[i].key} sx={{marginBottom:question_margin}}>
                             <h2>{this.props.questionEntities[i].questionText}</h2>
                             <TextField label="Your Answer" multiline={true} minRows={10} maxRows={10} fullWidth={true}
                                        value={this.state[this.props.questionEntities[i].id]}
@@ -128,7 +129,7 @@ class BareQuestion extends React.Component{
                     const questionChoices = this.props.questionEntities[i].questionChoices;
                     const qID = this.props.questionEntities[i].id;
                     question_choices_tags =
-                        <Box key={this.props.questionEntities[i].alias + this.props.questionEntities[i].key}>
+                        <Box key={this.props.questionEntities[i].alias + this.props.questionEntities[i].key} sx={{marginBottom:question_margin}}>
                             <h2>{this.props.questionEntities[i].questionText}</h2>
                             <FormGroup>
                                 {
@@ -203,12 +204,13 @@ class BareQuestion extends React.Component{
 
     render() {
         return(
-        <Box sx={{display:"flex",flexDirection:'column',m:10}}>
-            <Box sx={{marginBottom:5}}>
+        <Box sx={{display:"flex",flexDirection:'column',marginLeft:3}}>
+            <Box>
                 {this.processQuestions()}
             </Box>
-            <Box >
-                <LoadingButton variant="contained" loading={this.state.btnLoading} endIcon={<SendIcon />} onClick={() => this.handleSubmit()}>
+            <Box sx={{marginLeft: 'auto',
+                marginRight: 0}}>
+                <LoadingButton sx={{width:200}} variant="contained" loading={this.state.btnLoading} endIcon={<SendIcon />} onClick={() => this.handleSubmit()}>
                     Submit
                 </LoadingButton>
             </Box>
