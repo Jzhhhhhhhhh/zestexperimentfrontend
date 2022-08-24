@@ -3,6 +3,7 @@ import axios from "axios";
 import {Link, useParams, withRouter} from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import 'rsuite-table/dist/css/rsuite-table.css';
+import {Affix} from "antd";
 
 export default function ShowSchedules(){
     const params = useParams();
@@ -74,9 +75,9 @@ export default function ShowSchedules(){
                     const makeTable = (item) =>{
                         for (const i in item){
                             console.log(item[i])
-                            table.push(<div style={{marginLeft:"6rem", marginRight:"6rem", height:"33rem"}}>
+                            table.push(<div style={{marginLeft:"9rem", marginRight:"9rem", height:"auto"}}>
                                 <h1>ModuleType:{moduleType[i]["moduleType"]}</h1>
-                                <Table data={item[i]}>
+                                <Table data={item[i]} style={{borderRadius:"0.5rem"}}>
                                     <Column  width={300} sort="true" fixed="true" resizable>
                                         <HeaderCell>type</HeaderCell>
                                         <Cell dataKey="@type" />
@@ -108,11 +109,18 @@ export default function ShowSchedules(){
         fetchData()
 
     },[])
-    return(<div>
-        <p style={{background:"#F6D420",height:"80px",marginLeft:"160px",borderRadius:"32px"}}></p>
+    return(<div style={{background:"#cae8d7", height:"100rem"}}>
+        <Affix offsetTop={0}>
+            <div style={{background:"white",height:"8rem"}}>
+                <h style={{fontSize:"3rem",marginLeft:"6rem",fontFamily:"Monaco",marginTop:"1rem"}}>
+                    Details
+                </h>
+            </div>
+        </Affix>
+        <div style={{marginTop:"3rem"}}>
+            {tableList}
 
-        {tableList}
-        <p style={{background:"#F6D420",height:"80px",marginRight:"160px",marginTop:"3rem",borderRadius:"32px"}}></p>
+        </div>
 
     </div>)
 

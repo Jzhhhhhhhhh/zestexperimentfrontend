@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Checkbox} from "antd";
+import {Affix, Checkbox} from "antd";
 import { Divider, Radio, Table } from 'antd';
 import 'antd/dist/antd.css'
 import {Link} from "react-router-dom";
@@ -53,7 +53,7 @@ export default function NewQuestions(){
             info:exposureTimeInput
         },
         {
-            name:"questionChoiceType",
+            name:"questionChoicesType",
             info:questionChoiceTypeInput
         },
         {
@@ -73,17 +73,30 @@ export default function NewQuestions(){
             info:codeTextInput
         }
     ]
-
-
     const insertInfo=()=>{
         if (type == "DemographicQuestion"){
             let table = []
-            table.push(<div style={{marginLeft:"17rem",marginRight:"6rem",marginTop:"2rem"}}>
-                <h1 style={{marginTop:"3rem"}}>Question</h1>
-                <Divider></Divider>
-                <Table columns={columns} dataSource={demoData} pagination={false}>
-            </Table>
-                </div>)
+            table.push( <div style={{float:"left", marginLeft:"16rem",height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
+                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+                <h1 style={{marginLeft:"3rem"}}>Alias</h1>
+                {aliasInput}
+            </div>)
+            table.push( <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
+                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+                <h1 style={{marginLeft:"3rem"}}>QuestionText</h1>
+                {questionTextInput}
+            </div>)
+            table.push( <div style={{float:"left", marginLeft:"16rem",height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
+                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+                <h1 style={{marginLeft:"3rem"}}>questionChoicesType</h1>
+                {questionChoiceTypeInput}
+            </div>)
+            table.push( <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
+                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+                <h1 style={{marginLeft:"3rem"}}>questionChoices</h1>
+                {questionChoicesInput}
+            </div>)
+
             setQuestionTable(table)
         }
         else if (type == "CodeEvaluation"){
@@ -92,45 +105,70 @@ export default function NewQuestions(){
             // setQuestionChoiceTypeInput("scale_choice")
             // setQuestionChoices("1","2","3","4","5","can not tell")
             // setQuestionChoicesInput("1,2,3,4,5,can not tell")
-            table.push(<div style={{marginLeft:"17rem",marginRight:"6rem",marginTop:"2rem"}}>
-                <h1 style={{marginTop:"3rem"}}>Question</h1>
-                <Divider></Divider>
-                <Table columns={columns} dataSource={codeData} pagination={false}>
-            </Table>
+            table.push( <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
+                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+                <h1 style={{marginLeft:"3rem"}}>Alias</h1>
+                {aliasInput}
+            </div>)
+            table.push( <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
+                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+                <h1 style={{marginLeft:"3rem"}}>QuestionText</h1>
+                {questionTextInput}
+            </div>)
+            table.push( <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
+                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+                <h1 style={{marginLeft:"3rem"}}>questionChoicesType</h1>
+                {questionChoiceTypeInput}
+            </div>)
+            table.push( <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
+                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+                <h1 style={{marginLeft:"3rem"}}>questionChoices</h1>
+                {questionChoicesInput}
+            </div>)
+            table.push( <div style={{float:"left", marginLeft:"16rem",height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
+                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+                <h1 style={{marginLeft:"3rem"}}>exposuretime</h1>
+                {exposureTimeInput}
+            </div>)
+            table.push( <div style={{float:"left", marginLeft:"16rem",height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
+                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+                <h1 style={{marginLeft:"3rem"}}>codeType</h1>
+                {codeTypeInput}
+            </div>)
+            table.push( <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
+                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+                <h1 style={{marginLeft:"3rem"}}>codeText</h1>
+                {codeTextInput}
             </div>)
             setQuestionTable(table)
         }
     }
+
     useEffect(()=>{
         const changeAlias=(e)=>{
             setAlias(e.target.value)
         }
-        setAliasInput(<div>
-            <input style={{width:"55rem"}} onChange={changeAlias}/>
-        </div>)
-
-        const changeType=(e)=>{
-            setType(e.target.value)
-        }
-        setTypeInput(<div>
-            <select style={{width:"10.8rem",height:"1.9rem"}}onChange={changeType}>
-                <option value={"DemographicQuestion"}>DemographicQuestion</option>
-                <option value={"CodeEvaluation"}>CodeEvaluation</option>
-            </select>
-        </div>)
+        setAliasInput(
+            <div style={{marginLeft:"3rem"}}>
+            <input style={{width:"25rem",height:"1.9rem",borderRadius:"0.5rem",borderStyle:"dashed"}} onChange={changeAlias} defaultValue={"alias"}/>
+        </div>
+        // <div style={{float:"left", marginLeft:"15rem",height:"10rem",marginTop:"2rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
+        //     <input style={{width:"55rem"}} onChange={changeAlias}/>
+        // </div>
+        )
 
         const changeQuestionText=(e)=>{
             setQuestionText(e.target.value)
         }
-        setQuestionTextInput(<div>
-            <input  style={{width:"55rem", height:"6rem"}}onChange={changeQuestionText}/>
+        setQuestionTextInput(<div style={{marginLeft:"3rem"}}>
+            <input  style={{width:"25rem",height:"3rem",borderRadius:"0.5rem",borderStyle:"dashed"}} onChange={changeQuestionText}/>
         </div>)
 
         const changeQuestionChoiceType=(e)=>{
             setQuestionChoiceType(e.target.value)
         }
-        setQuestionChoiceTypeInput(<div>
-            <select style={{width:"10.8rem",height:"1.9rem"}} onChange={changeQuestionChoiceType}>
+        setQuestionChoiceTypeInput(<div style={{marginLeft:"3rem"}}>
+            <select style={{width:"10.8rem",height:"1.9rem",borderRadius:"0.5rem",borderStyle:"solid"}} onChange={changeQuestionChoiceType}>
                 <option value={"MULTI_CHOICE"}>multi_choice</option>
                 <option value={"SINGLE_CHOICE"}>single_choice</option>
                 <option value={"TEXT"}>text</option>
@@ -141,8 +179,8 @@ export default function NewQuestions(){
         const changeExposureTime=(e)=>{
             setExposureTime(e.target.value)
         }
-        setExposureTimeInput(<div>
-            <input style={{width:"55rem"}}onChange={changeExposureTime}/>
+        setExposureTimeInput(<div style={{marginLeft:"3rem"}}>
+            <input style={{width:"25rem",height:"1.9rem",borderRadius:"0.5rem",borderStyle:"dashed"}}onChange={changeExposureTime}/>
         </div>)
 
         const changeQuestionChoices=(e)=>{
@@ -153,13 +191,13 @@ export default function NewQuestions(){
             </div>)
         }
         else if (questionChoiceType == "SCALE_CHOICE"){
-            setQuestionChoicesInput(<div>
-                <input style={{width:"10.8rem"}}onChange={changeQuestionChoices}/>
+            setQuestionChoicesInput(<div style={{marginLeft:"3rem"}}>
+                <input style={{width:"25rem",height:"3rem",borderRadius:"0.5rem",borderStyle:"dashed"}}onChange={changeQuestionChoices}/>
             </div>)
         }
         else{
-            setQuestionChoicesInput(<div>
-                <input style={{width:"10.8rem"}}onChange={changeQuestionChoices}/>
+            setQuestionChoicesInput(<div style={{marginLeft:"3rem"}}>
+                <input style={{width:"25rem",height:"3rem",borderRadius:"0.5rem",borderStyle:"dashed"}}onChange={changeQuestionChoices}/>
             </div>)
         }
 
@@ -167,23 +205,34 @@ export default function NewQuestions(){
         const changeCodeText=(e)=>{
             setCodeText(e.target.value)
         }
-        setCodeTextInput(<div>
-            <input style={{width:"55rem"}}onChange={changeCodeText}/>
+        setCodeTextInput(<div style={{marginLeft:"3rem"}}>
+            <input style={{width:"25rem",height:"3rem",borderRadius:"0.5rem",borderStyle:"dashed"}}onChange={changeCodeText}/>
         </div>)
 
         const changeCodeType=(e)=>{
             setCodeType(e.target.value)
         }
-        setCodeTypeInput(<div>
-            <select style={{width:"10.8rem",height:"1.9rem"}} onChange={changeCodeType}>
+        setCodeTypeInput(<div style={{marginLeft:"3rem"}}>
+            <select style={{width:"10.8rem",height:"1.9rem",borderRadius:"0.5rem",borderStyle:"solid"}} onChange={changeCodeType}>
                 <option value={"java"}>Java</option>
                 <option value={"C++"}>C++</option>
                 <option value={"python"}>Python</option>
             </select>
         </div>)
+        const changeType=(e)=>{
+            setType(e.target.value)
+        }
+        setTypeInput(<div style={{marginLeft:"3rem"}}>
+            <select style={{width:"10.8rem",height:"1.9rem",borderRadius:"0.5rem",borderStyle:"solid"}}onChange={changeType}>
+                <option value={"DemographicQuestion"}>DemographicQuestion</option>
+                <option value={"CodeEvaluation"}>CodeEvaluation</option>
+            </select>
+        </div>)
 
 
     },[questionChoiceType])
+
+
     const changeQuestion=()=>{
         if (type == "DemographicQuestion"){
             setQuestion([{
@@ -214,24 +263,39 @@ export default function NewQuestions(){
             console.log(question)
         }
     }
+
+
     return(
-        <div >
-            <p style={{background:"#F6D420",height:"80px",marginLeft:"160px",borderRadius:"32px"}}></p>
-            <div style={{float:"left", marginLeft:"2rem",height:"10rem",marginTop:"2rem"}}>
-                <h1>NewQuestion</h1>
-                <Divider style={{marginTop:"7.5rem"}}></Divider>
-                <div>
+        <div style={{background:"#cae8d7", height:"100rem"}}>
+            <Affix offsetTop={0}>
+                <div style={{background:"white",height:"8rem"}}>
+                    <h style={{fontSize:"3rem",marginLeft:"12rem",fontFamily:"Monaco",marginTop:"1rem"}}>
+                        New Question
+                    </h>
+                        <button onClick={changeQuestion} style={{marginLeft:"20rem",marginTop:"-1rem",height:"3rem", width:"5rem",background:"#7f2687",color:"white"}}>Add</button>
+                </div>
+            </Affix>
+            <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"2rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
+                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+                <h1 style={{marginLeft:"3rem"}}>QuestionType</h1>
+                <div style={{float:"left"}}>
                     {typeInput}
-                    <p></p>
-                    <button onClick={insertInfo} style={{width:"10.8rem"}}>Add</button>
-                    <p></p>
-                        <button onClick={changeQuestion} style={{width:"10.8rem"}}>Add Question</button>
+
+                </div>
+                <div>
+                    <button onClick={insertInfo} style={{borderStyle:"solid",width:"3rem",marginLeft:"3rem",borderRadius:"0.5rem",borderColor:"#118847"}}>Add</button>
+
                 </div>
 
+                {/*<p></p>*/}
+                    {/*<button onClick={insertInfo} style={{width:"10.8rem"}}>Add</button>*/}
+                    {/*<p></p>*/}
+
+
             </div>
+
             <div style={{height:"29rem"}}>
                 {questionTable}
             </div>
-            <p style={{background:"#F6D420",height:"80px",marginRight:"160px",marginTop:"22rem",borderRadius:"32px"}}></p>
         </div>)
 }
