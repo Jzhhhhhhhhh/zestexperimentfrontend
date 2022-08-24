@@ -174,7 +174,7 @@ export default function NewSchedule(){
             scheduleType:scheduleType,
             scheduleModuleList:scheduleModuleList
         }])
-        axios.post("https://localhost:8000/schedules",JSON.stringify(schedule),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
+        axios.post("https://localhost:8443/schedules",JSON.stringify(schedule),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
             console.log(res)
         })
         console.log(schedule)

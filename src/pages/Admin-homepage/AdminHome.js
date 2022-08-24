@@ -47,7 +47,7 @@ export default function AdminHome(){
     }
 
     const deleteSchedule = (url) =>{
-        axios.delete('https://localhost:8000/schedule/'+url).then((res)=>{
+        axios.delete('https://localhost:8443/schedule/'+url).then((res)=>{
             console.log(res)
         })
     }
@@ -59,7 +59,7 @@ export default function AdminHome(){
     }
     const deleteQuestion = (url) =>{
         console.log(url)
-        axios.delete('https://localhost:8000/questions/'+url).then((res)=>{
+        axios.delete('https://localhost:8443/questions/'+url).then((res)=>{
             console.log(res)
         })
         // axios.get('https://localhost:8000/schedule/question/'+url).then((res)=>{
@@ -275,9 +275,9 @@ export default function AdminHome(){
                 </h>
                 <div style={{marginTop:"1rem"}}>
                     <button style={{float:"right",borderRadius:"0.5rem",height:"2rem",marginRight:"6rem",marginLeft:"2rem", background:"DodgerBlue", color:"white"}}
-                            onClick={()=>{window.location.href="https://localhost:8000/csv?mode=pilot"}}>Pilot systems results</button>
+                            onClick={()=>{window.location.href="https://localhost:8443/csv?mode=pilot"}}>Pilot systems results</button>
                     <button style={{float:"right",borderRadius:"0.5rem",height:"2rem",marginLeft:"2rem",background:"DodgerBlue", color:"white"}}
-                            onClick={()=>{window.location.href="https://localhost:8000/csv?mode=experiment"}}>Experiment systems results</button>
+                            onClick={()=>{window.location.href="https://localhost:8443/csv?mode=experiment"}}>Experiment systems results</button>
 
                 </div>
 
