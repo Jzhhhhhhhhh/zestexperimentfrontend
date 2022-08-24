@@ -62,7 +62,7 @@ export default function NewSchedule(){
     useEffect(()=> {
         async function fetchData() {
             const getQuestion = () => {
-                return axios.get("https://localhost:8000/questions")
+                return axios.get("https://localhost:8443/questions")
             }
             let questions = await getQuestion()
             const deserializeQuestion = (questions) =>{
@@ -136,7 +136,21 @@ export default function NewSchedule(){
             </select>
         </div>)
 
-
+        const changeSchedule=()=>{
+            setSchedule([{
+                alias:alias,
+                "@type":type,
+                testGroup:testGroup,
+                stoppingCount:stoppingCount,
+                scheduleType:scheduleType,
+                scheduleModuleList:scheduleModuleList
+            }])
+            axios.post("https://localhost:8443/schedules",JSON.stringify(schedule),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
+                console.log(res)
+            })
+            console.log(schedule)
+        }
+        setScheduleInput(<button style={{width:"7.5rem"}} onClick={changeSchedule}>AddSchedule</button>)
     },[questionIdList,scheduleModuleList,schedule])
 
     const changeModuleList=()=>{

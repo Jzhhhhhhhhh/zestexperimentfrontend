@@ -257,7 +257,7 @@ export default function NewQuestions(){
         }
         console.log("sgasd")
         if (question){
-            axios.post("https://localhost:8000/questions",JSON.stringify(question),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
+            axios.post("https://localhost:8443/questions",JSON.stringify(question),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
                 console.log(res)
             })
             console.log(question)

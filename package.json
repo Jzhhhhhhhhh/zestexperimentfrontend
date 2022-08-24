@@ -13,7 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "antd": "^4.20.6",
     "antd-mobile": "^5.12.6",
-    "highlight.js": "^11.5.1",
+    "highlight.js": "^11.6.0",
     "qs": "^6.10.3",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
