@@ -6,7 +6,7 @@ class Admin extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            url: "http://localhost:8443/questions",
+            url: "http://localhost:8080/questions",
             message:null,
             ques:1,
             questionList:[],
@@ -16,7 +16,7 @@ class Admin extends React.Component{
         }
     }
     getFinished=()=>{
-        axios.get("http://localhost:8443/testees/amount",{params:{finished:"",mode:"pilot"}}).then((res)=>{
+        axios.get("http://localhost:8080/testees/amount",{params:{finished:"",mode:"pilot"}}).then((res)=>{
             this.setState({
                 finished:res.data
             })
@@ -30,7 +30,7 @@ class Admin extends React.Component{
     }
     getQuestions=()=>{
         this.getSchedules()
-        axios.get("http://localhost:8443/questions").then((res)=>{
+        axios.get("http://localhost:8080/questions").then((res)=>{
             this.state.questionList=res.data;
             console.log(this.state.questionList)
             this.blankList()
@@ -55,7 +55,7 @@ class Admin extends React.Component{
     }
 
     getSchedules=()=>{
-        axios.get("http://localhost:8443/schedules",{headers: {'Content-Type': 'application/json'}}).then((res)=>{
+        axios.get("http://localhost:8080/schedules",{headers: {'Content-Type': 'application/json'}}).then((res)=>{
             this.state.schedule=res.data
             this.blankSchedule()
             for (let i=0; i<this.state.schedule.length;i++ ){

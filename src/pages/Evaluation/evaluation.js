@@ -14,7 +14,7 @@ class Evaluation extends React.Component{
         this.state = {
             done: false,
             mode: this.props.mode,
-            url: 'https://localhost:8443/' + this.props.mode + '/' + invitation_id,
+            url: 'http://localhost:8080/' + this.props.mode + '/' + invitation_id,
             questionEntities: null,
         }
         console.log(window.location.href)

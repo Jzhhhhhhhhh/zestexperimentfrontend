@@ -62,7 +62,7 @@ export default function NewSchedule(){
     useEffect(()=> {
         async function fetchData() {
             const getQuestion = () => {
-                return axios.get("https://localhost:8443/questions")
+                return axios.get("http://localhost:8080/questions")
             }
             let questions = await getQuestion()
             const deserializeQuestion = (questions) =>{
@@ -145,7 +145,7 @@ export default function NewSchedule(){
                 scheduleType:scheduleType,
                 scheduleModuleList:scheduleModuleList
             }])
-            axios.post("https://localhost:8443/schedules",JSON.stringify(schedule),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
+            axios.post("http://localhost:8080/schedules",JSON.stringify(schedule),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
                 console.log(res)
             })
             console.log(schedule)
@@ -174,7 +174,7 @@ export default function NewSchedule(){
             scheduleType:scheduleType,
             scheduleModuleList:scheduleModuleList
         }])
-        axios.post("https://localhost:8443/schedules",JSON.stringify(schedule),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
+        axios.post("http://localhost:8080/schedules",JSON.stringify(schedule),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
             console.log(res)
         })
         console.log(schedule)

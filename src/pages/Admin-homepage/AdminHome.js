@@ -47,7 +47,7 @@ export default function AdminHome(){
     }
 
     const deleteSchedule = (url) =>{
-        axios.delete('https://localhost:8443/schedule/'+url).then((res)=>{
+        axios.delete('http://localhost:8080/schedule/'+url).then((res)=>{
             console.log(res)
         })
     }
@@ -59,7 +59,7 @@ export default function AdminHome(){
     }
     const deleteQuestion = (url) =>{
         console.log(url)
-        axios.delete('https://localhost:8443/questions/'+url).then((res)=>{
+        axios.delete('http://localhost:8080/questions/'+url).then((res)=>{
             console.log(res)
         })
         // axios.get('https://localhost:8000/schedule/question/'+url).then((res)=>{
@@ -120,21 +120,21 @@ export default function AdminHome(){
 
         async function fetchData(){
             const getFinished = () =>{
-                return axios.get("https://localhost:8443/testees/amount",{params:{finished:"",mode:"pilot"}})
+                return axios.get("http://localhost:8080/testees/amount",{params:{finished:"",mode:"pilot"}})
             }
             let number = await getFinished()
             console.log(number.data)
             const getSchedules = () =>{
-                return axios.get("https://localhost:8443/schedules")
+                return axios.get("http://localhost:8080/schedules")
             }
             let schedules = await getSchedules()
             //console.log(schedules.data)
             const getQuestions = () =>{
-                return axios.get("https://localhost:8443/questions")
+                return axios.get("http://localhost:8080/questions")
             }
             let questions = await getQuestions()
             const getInvitation = () =>{
-                return axios.get("https://localhost:8443/invitations")
+                return axios.get("http://localhost:8080/invitations")
             }
             let invitations = await getInvitation()
             console.log(invitations.data)
@@ -143,7 +143,7 @@ export default function AdminHome(){
                 let finishedNumber = number.data
                 let finishedButton = []
                 const exportPILOT = () =>{
-                    axios.get("https://localhost:8443/csv",{params:{mode:"pilot"}}).then((res) =>{
+                    axios.get("http://localhost:8080/csv",{params:{mode:"pilot"}}).then((res) =>{
                         console.log(res.data)
                     })
                 }
@@ -261,7 +261,7 @@ export default function AdminHome(){
         let data = {
             source:invitation
         }
-        axios.post("https://localhost:8443/invitations",JSON.stringify(data),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
+        axios.post("http://localhost:8080/invitations",JSON.stringify(data),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
             console.log(res)
         })
     }
@@ -275,9 +275,9 @@ export default function AdminHome(){
                 </h>
                 <div style={{marginTop:"1rem"}}>
                     <button style={{float:"right",borderRadius:"0.5rem",height:"2rem",marginRight:"6rem",marginLeft:"2rem", background:"DodgerBlue", color:"white"}}
-                            onClick={()=>{window.location.href="https://localhost:8443/csv?mode=pilot"}}>Pilot systems results</button>
+                            onClick={()=>{window.location.href="http://localhost:8080/csv?mode=pilot"}}>Pilot systems results</button>
                     <button style={{float:"right",borderRadius:"0.5rem",height:"2rem",marginLeft:"2rem",background:"DodgerBlue", color:"white"}}
-                            onClick={()=>{window.location.href="https://localhost:8443/csv?mode=experiment"}}>Experiment systems results</button>
+                            onClick={()=>{window.location.href="http://localhost:8080/csv?mode=experiment"}}>Experiment systems results</button>
 
                 </div>
 
