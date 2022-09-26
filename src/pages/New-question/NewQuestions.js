@@ -74,69 +74,73 @@ export default function NewQuestions(){
         }
     ]
     const insertInfo=()=>{
-        if (type == "DemographicQuestion"){
+        let form_style = {float:"left", marginLeft:"16rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"0.5rem",paddingBottom:"1rem"}
+
+        let bar_style = {background:"#118847", height:"1rem",borderTopRightRadius:"0.5rem", borderTopLeftRadius:"0.5rem"}
+
+        if (type === "DemographicQuestion"){
             let table = []
-            table.push( <div style={{float:"left", marginLeft:"16rem",height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
-                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+            table.push( <div style={form_style}>
+                <p style={bar_style}></p>
                 <h1 style={{marginLeft:"3rem"}}>Alias</h1>
                 {aliasInput}
             </div>)
-            table.push( <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
-                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+            table.push( <div style={form_style}>
+                <p style={bar_style}></p>
                 <h1 style={{marginLeft:"3rem"}}>QuestionText</h1>
                 {questionTextInput}
             </div>)
-            table.push( <div style={{float:"left", marginLeft:"16rem",height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
-                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+            table.push( <div style={form_style}>
+                <p style={bar_style}></p>
                 <h1 style={{marginLeft:"3rem"}}>questionChoicesType</h1>
                 {questionChoiceTypeInput}
             </div>)
-            table.push( <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
-                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+            table.push( <div style={form_style}>
+                <p style={bar_style}></p>
                 <h1 style={{marginLeft:"3rem"}}>questionChoices</h1>
                 {questionChoicesInput}
             </div>)
 
             setQuestionTable(table)
         }
-        else if (type == "CodeEvaluation"){
+        else if (type === "CodeEvaluation"){
             let table = []
             // setQuestionChoiceType("SCALE_CHOICE")
             // setQuestionChoiceTypeInput("scale_choice")
             // setQuestionChoices("1","2","3","4","5","can not tell")
             // setQuestionChoicesInput("1,2,3,4,5,can not tell")
-            table.push( <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
-                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+            table.push( <div style={form_style}>
+                <p style={bar_style}></p>
                 <h1 style={{marginLeft:"3rem"}}>Alias</h1>
                 {aliasInput}
             </div>)
-            table.push( <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
-                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+            table.push( <div style={form_style}>
+                <p style={bar_style}></p>
                 <h1 style={{marginLeft:"3rem"}}>QuestionText</h1>
                 {questionTextInput}
             </div>)
-            table.push( <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
-                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+            table.push( <div style={form_style}>
+                <p style={bar_style}></p>
                 <h1 style={{marginLeft:"3rem"}}>questionChoicesType</h1>
                 {questionChoiceTypeInput}
             </div>)
-            table.push( <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
-                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+            table.push( <div style={form_style}>
+                <p style={bar_style}></p>
                 <h1 style={{marginLeft:"3rem"}}>questionChoices</h1>
                 {questionChoicesInput}
             </div>)
-            table.push( <div style={{float:"left", marginLeft:"16rem",height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
-                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+            table.push( <div style={form_style}>
+                <p style={bar_style}></p>
                 <h1 style={{marginLeft:"3rem"}}>exposuretime</h1>
                 {exposureTimeInput}
             </div>)
-            table.push( <div style={{float:"left", marginLeft:"16rem",height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
-                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+            table.push( <div style={form_style}>
+                <p style={bar_style}></p>
                 <h1 style={{marginLeft:"3rem"}}>codeType</h1>
                 {codeTypeInput}
             </div>)
-            table.push( <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
-                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+            table.push( <div style={form_style}>
+                <p style={bar_style}></p>
                 <h1 style={{marginLeft:"3rem"}}>codeText</h1>
                 {codeTextInput}
             </div>)
@@ -257,7 +261,7 @@ export default function NewQuestions(){
         }
         console.log("sgasd")
         if (question){
-            axios.post("http://localhost:8080/questions",JSON.stringify(question),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
+            axios.post("https://zest-survey-platform.ifi.uzh.ch/api/questions",JSON.stringify(question),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
                 console.log(res)
             })
             console.log(question)
@@ -266,17 +270,18 @@ export default function NewQuestions(){
 
 
     return(
-        <div style={{background:"#cae8d7", height:"100rem"}}>
-            <Affix offsetTop={0}>
-                <div style={{background:"white",height:"8rem"}}>
+        <div style={{background:"#cae8d7"}}>
+            {/*<Affix offsetTop={0}>*/}
+                <div style={{background:"white",height:"20vh"}}>
                     <h style={{fontSize:"3rem",marginLeft:"12rem",fontFamily:"Monaco",marginTop:"1rem"}}>
                         New Question
                     </h>
                         <button onClick={changeQuestion} style={{marginLeft:"20rem",marginTop:"-1rem",height:"3rem", width:"5rem",background:"#7f2687",color:"white"}}>Add</button>
                 </div>
-            </Affix>
-            <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"2rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
-                <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
+            {/*</Affix>*/}
+            <div style={{height:"80vh", overflow:"scroll"}}>
+                <div style={{float:"left", marginLeft:"16rem",height:"10rem",marginTop:"2rem",width:"40rem",background:"white",borderRadius:"0.5rem"}}>
+                <p style={{background:"#118847", height:"1rem",borderTopRightRadius:"0.5rem", borderTopLeftRadius:"0.5rem"}}></p>
                 <h1 style={{marginLeft:"3rem"}}>QuestionType</h1>
                 <div style={{float:"left"}}>
                     {typeInput}
@@ -296,6 +301,7 @@ export default function NewQuestions(){
 
             <div style={{height:"29rem"}}>
                 {questionTable}
+            </div>
             </div>
         </div>)
 }

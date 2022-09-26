@@ -18,7 +18,7 @@ export default function ShowSchedules(){
     useEffect( ()=>{
         async function fetchData(){
             const getSchedule = () =>{
-                return axios.get("http://localhost:8080/schedules/"+params['name'])
+                return axios.get("https://zest-survey-platform.ifi.uzh.ch/api/schedules/"+params['name'])
             }
             let schedule =await getSchedule()
             const moduleList = []
@@ -34,7 +34,7 @@ export default function ShowSchedules(){
             }
             getModuleList()
             const getQuestionById = async (id) =>{
-                return axios.get("http://localhost:8080/questions/"+id)
+                return axios.get("https://zest-survey-platform.ifi.uzh.ch/api/questions/"+id)
             }
             //console.log(moduleList)
             const questionIdList = []

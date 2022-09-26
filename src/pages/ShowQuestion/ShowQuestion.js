@@ -20,7 +20,7 @@ export default function ShowQuestion(){
     useEffect(()=>{
         async function fetchData(){
             const getQuestion = () =>{
-                return axios.get("http://localhost:8080/questions/"+params['name'])
+                return axios.get("https://zest-survey-platform.ifi.uzh.ch/api/questions/"+params['name'])
             }
             let question =await getQuestion()
 

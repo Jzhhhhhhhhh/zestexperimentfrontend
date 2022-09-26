@@ -62,7 +62,7 @@ export default function NewSchedule(){
     useEffect(()=> {
         async function fetchData() {
             const getQuestion = () => {
-                return axios.get("http://localhost:8080/questions")
+                return axios.get("https://zest-survey-platform.ifi.uzh.ch/api/questions")
             }
             let questions = await getQuestion()
             const deserializeQuestion = (questions) =>{
@@ -145,7 +145,7 @@ export default function NewSchedule(){
                 scheduleType:scheduleType,
                 scheduleModuleList:scheduleModuleList
             }])
-            axios.post("http://localhost:8080/schedules",JSON.stringify(schedule),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
+            axios.post("https://zest-survey-platform.ifi.uzh.ch/api/schedules",JSON.stringify(schedule),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
                 console.log(res)
             })
             console.log(schedule)
@@ -174,7 +174,7 @@ export default function NewSchedule(){
             scheduleType:scheduleType,
             scheduleModuleList:scheduleModuleList
         }])
-        axios.post("http://localhost:8080/schedules",JSON.stringify(schedule),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
+        axios.post("https://zest-survey-platform.ifi.uzh.ch/api/schedules",JSON.stringify(schedule),{headers: {'Content-Type': 'application/json'}}).then((res)=>{
             console.log(res)
         })
         console.log(schedule)
@@ -218,7 +218,7 @@ export default function NewSchedule(){
                     <h1 style={{marginLeft:"3rem"}}>type</h1>
                     {typeInput}
                 </div>
-                <div style={{float:"left", marginLeft:"16rem",height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
+                <div style={{float:"left", marginLeft:"16rem",height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem,1rem,0,0"}}>
                     <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
                     <h1 style={{marginLeft:"3rem"}}>moduleType</h1>
                     {moduleTypeInput}
