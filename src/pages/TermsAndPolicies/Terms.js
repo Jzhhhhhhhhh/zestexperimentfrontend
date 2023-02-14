@@ -49,13 +49,13 @@ const Terms = () =>  {
                 It is up to you to take precautions to protect yourself from viruses, worms, Trojan horses,
                 and other potentially destructive programs, and to protect your information.</p>
             <b>Data handling policy</b>
-            <div style={{paddingTop:"40px"}}align="center">
-                <Link to="/#">
-                    <button  id="continue" style={{background:"#5561FF",color:"#FFFFFF",width:"160px",height:"50px",borderRadius:"8px"}}>
-                        Agree and Continue
-                    </button>
-                </Link>
-            </div>
+            {/*<div style={{paddingTop:"40px"}}align="center">*/}
+            {/*    <Link to="/#">*/}
+            {/*        <button  id="continue" style={{background:"#5561FF",color:"#FFFFFF",width:"160px",height:"50px",borderRadius:"8px"}}>*/}
+            {/*            Agree and Continue*/}
+            {/*        </button>*/}
+            {/*    </Link>*/}
+            {/*</div>*/}
         </div>
     </div>
 
