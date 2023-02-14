@@ -73,6 +73,7 @@ export default function AdminHome(){
     }
     const deleteSchedule = (url) =>{
         axios.delete(originUrl+'schedule/'+url).then((res)=>{
+
             console.log(res)
             window.location.reload()
         })

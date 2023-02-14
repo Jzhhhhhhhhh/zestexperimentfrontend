@@ -26,6 +26,7 @@ export default function NewQuestions(){
     const handleDeleteChoice = (index) =>{
         setChoices(choices.filter((choice,i)=>i!==index))}
 
+
     const changeQuestion=()=>{
         let question
         console.log(choices)

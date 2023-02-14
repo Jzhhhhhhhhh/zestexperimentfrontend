@@ -155,6 +155,7 @@ export default function NewSchedule(){
             const getQuestion = () => {return axios.get(originUrl+"questions")}
             let question = await getQuestion()
             setQuestions(question.data)
+
             const deserializeQuestion = (questions) =>{
                 //console.log(questions.data)
                 let table = []
