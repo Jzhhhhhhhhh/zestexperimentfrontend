@@ -4,8 +4,8 @@ import {Affix, Modal} from "antd";
 import 'antd/dist/antd.css'
 
 export default function NewQuestions(){
-    const originUrl = 'https://zest-survey-platform.ifi.uzh.ch/api/'
-    // const originUrl = "http://localhost:8080/"
+    // const originUrl = 'https://zest-survey-platform.ifi.uzh.ch/api/'
+    const originUrl = "http://localhost:8080/"
     // const [question, setQuestion] = useState()
     const [type, setType] = useState("DemographicQuestion")
     const [questionText, setQuestionText] = useState()

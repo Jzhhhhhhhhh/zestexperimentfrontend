@@ -15,8 +15,8 @@ export default function AdminHome(){
     let alertContent = ''
     let questionInSchedule
     let escapedString
-    const originUrl = "https://zest-survey-platform.ifi.uzh.ch/api/"
-    // const originUrl = "http://localhost:8080/"
+    // const originUrl = "https://zest-survey-platform.ifi.uzh.ch/api/"
+    const originUrl = "http://localhost:8080/"
     const [finished, setFinished] = useState()
     const [pilotFinished, setPilotFinished] = useState()
     const [experimentFinished, setExperimentFinished] = useState()

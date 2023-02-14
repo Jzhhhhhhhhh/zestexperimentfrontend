@@ -7,8 +7,8 @@ import {SearchOutlined} from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 
 export default function ShowSchedules(){
-    const originUrl = 'https://zest-survey-platform.ifi.uzh.ch/api/'
-    // const originUrl = "http://localhost:8080/"
+    // const originUrl = 'https://zest-survey-platform.ifi.uzh.ch/api/'
+    const originUrl = "http://localhost:8080/"
     const [id, setId] = useState()
     const [questions, setQuestions] = useState()
     const [data, setData] = useState([])

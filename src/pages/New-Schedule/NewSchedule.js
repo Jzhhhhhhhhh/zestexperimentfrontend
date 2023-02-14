@@ -5,8 +5,8 @@ import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 
 export default function NewSchedule(){
-    const originUrl = 'https://zest-survey-platform.ifi.uzh.ch/api/'
-    // const originUrl = "http://localhost:8080/"
+    // const originUrl = 'https://zest-survey-platform.ifi.uzh.ch/api/'
+    const originUrl = "http://localhost:8080/"
     const [questionTable, setQuestionTable] = useState()
     const [questions, setQuestions] = useState()
     const [alias, setAlias] = useState()
@@ -217,7 +217,14 @@ export default function NewSchedule(){
 
     const findQuestions = () =>{
         console.log(questions)
-        let question = questions.filter((choice)=>choice['@type']==moduleType)
+        let mtype
+        if (moduleType == "CODE"){
+            mtype = 'CodeEvaluation'
+        }
+        else if (moduleType == "DEMO"){
+            mtype = 'DemographicQuestion'
+        }
+        let question = questions.filter((choice)=>choice['@type']==mtype)
         console.log(question)
         let table = []
         table.push(<div style={{marginLeft:"3rem",marginRight:"3rem",marginTop:"5rem",height:"auto"}}>

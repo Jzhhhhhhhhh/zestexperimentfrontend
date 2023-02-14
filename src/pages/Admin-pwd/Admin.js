@@ -15,8 +15,8 @@ class Admin extends React.Component{
             aliasList:[],
             scheduleList:[],
             finished:0,
-            originUrl:'https://zest-survey-platform.ifi.uzh.ch/api/',
-            // originUrl:"http://localhost:8080/",
+            // originUrl:'https://zest-survey-platform.ifi.uzh.ch/api/',
+            originUrl:"http://localhost:8080/",
         }
     }
     getFinished=()=>{

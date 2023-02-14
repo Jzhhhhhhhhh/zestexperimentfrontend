@@ -6,8 +6,8 @@ import 'rsuite-table/dist/css/rsuite-table.css';
 import {Affix} from "antd";
 
 export default function ShowQuestion(){
-   const originUrl = 'https://zest-survey-platform.ifi.uzh.ch/api/'
-    // const originUrl = "http://localhost:8080/"
+   // const originUrl = 'https://zest-survey-platform.ifi.uzh.ch/api/'
+    const originUrl = "http://localhost:8080/"
     const [id, setId] = useState()
     const [data, setData] = useState([])
     const [question, setQuestion] = useState()
