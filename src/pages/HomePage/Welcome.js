@@ -5,11 +5,9 @@ import { HashRouter as Router, Link, Route, Redirect,Switch } from 'react-router
 
 
 function Welcome(){
-    return<div style={{height:"100%"}}>
-        <p style={{background:"#F6D420",height:"80px",marginLeft:"160px",borderRadius:"32px"}}>
-
-        </p>
-        <h1 style={{paddingTop:'200px',fontSize:"44px"}}align="center">
+    return<div style={{height:'100vh', position:"relative"}}>
+        <div style={{background:"#F6D420",height:"80px",marginLeft:"160px",borderRadius:"32px",position:"absolute",top:'0',right:'0',clear:"both", width:"70%"}}></div>
+        <h1 style={{paddingTop:'40vh',fontSize:"44px"}}align="center">
             Welcom to a ZEST Experiment
         </h1>
         <p align="center">
@@ -28,9 +26,7 @@ function Welcome(){
             </Link>
 
         </p>
-        <p style={{background:"#F6D420",height:"80px",marginRight:"160px",marginTop:"11rem",borderRadius:"32px"}}>
-
-        </p>
+        <div style={{background:"#F6D420",height:"80px",marginRight:"160px",marginTop:"11rem",borderRadius:"32px",position:"absolute",bottom:'0',left:'0',clear:"both", width:"70%"}}></div>
 
     </div>
 }

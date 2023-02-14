@@ -3,20 +3,24 @@ import { Link} from 'react-router-dom';
 import axios from "axios";
 
 class Admin extends React.Component{
+
+
+
     constructor(props) {
         super(props);
         this.state = {
-            url: "http://localhost:8443/questions",
             message:null,
             ques:1,
             questionList:[],
             aliasList:[],
             scheduleList:[],
             finished:0,
+            originUrl:'https://zest-survey-platform.ifi.uzh.ch/api/',
+            // originUrl:"http://localhost:8080/",
         }
     }
     getFinished=()=>{
-        axios.get("http://localhost:8443/testees/amount",{params:{finished:"",mode:"pilot"}}).then((res)=>{
+        axios.get(this.originUrl+"testees/amount",{params:{finished:"",mode:"pilot"}}).then((res)=>{
             this.setState({
                 finished:res.data
             })
@@ -30,7 +34,7 @@ class Admin extends React.Component{
     }
     getQuestions=()=>{
         this.getSchedules()
-        axios.get("http://localhost:8443/questions").then((res)=>{
+        axios.get(this.originUrl+"questions").then((res)=>{
             this.state.questionList=res.data;
             console.log(this.state.questionList)
             this.blankList()
@@ -55,7 +59,7 @@ class Admin extends React.Component{
     }
 
     getSchedules=()=>{
-        axios.get("http://localhost:8443/schedules",{headers: {'Content-Type': 'application/json'}}).then((res)=>{
+        axios.get(this.originUrl+"schedules",{headers: {'Content-Type': 'application/json'}}).then((res)=>{
             this.state.schedule=res.data
             this.blankSchedule()
             for (let i=0; i<this.state.schedule.length;i++ ){
@@ -77,26 +81,21 @@ class Admin extends React.Component{
 
 
     render(){
-        return(<div style={{height:"100%"}}>
-            <p style={{background:"#F6D420",height:"80px",marginLeft:"160px",borderRadius:"32px"}}>
-
-            </p>
-            <h1 style={{paddingTop:'200px',fontSize:"44px"}}align="center">
+        return(<div style={{height:'100vh', position:"relative"}}>
+            <div style={{background:"#F6D420",height:"80px",marginLeft:"160px",borderRadius:"32px",position:"absolute",top:'0',right:'0',clear:"both", width:"70%"}}></div>
+            <h1 style={{paddingTop:'40vh',fontSize:"44px"}}align="center">
                 ZEST Experimentor Admin
             </h1>
             <p align="center">
-                <input style={{width:"300px",height:"50px",borderRadius:"8px"}}/>
-            </p>
-            <p align="center">
                 <Link to={{pathname: "/adminHomepage",state:{localState: this.state,questionList: this.state.questionList,scheduleList: this.state.scheduleList}}} >
                     <button style={{background:"#5561FF",color:"#FFFFFF",width:"160px",height:"50px",borderRadius:"8px"}} onClick={this.getQuestions}>
-                        Login
+                        Login with UZH
                     </button>
                 </Link>
             </p>
-            <p style={{background:"#F6D420",height:"80px",marginRight:"160px",marginTop:"11rem",borderRadius:"32px"}}>
+            <div style={{background:"#F6D420",height:"80px",marginRight:"160px",borderRadius:"32px",position:"absolute",bottom:'0',left:'0',clear:"both", width:"70%"}}>
 
-            </p>
+            </div>
 
         </div>)
     }

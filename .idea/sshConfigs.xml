@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="zest-survey-platform.ifi.uzh.ch" id="0d1df9f1-ace0-4aa4-9e39-abcc5c4e7647" keyPath="$USER_HOME$/.ssh/id_rsa" port="22" nameFormat="DESCRIPTIVE" username="deployer" />
+    </configs>
+  </component>
+</project>

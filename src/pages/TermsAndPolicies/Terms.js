@@ -50,7 +50,7 @@ const Terms = () =>  {
                 and other potentially destructive programs, and to protect your information.</p>
             <b>Data handling policy</b>
             <div style={{paddingTop:"40px"}}align="center">
-                <Link to="/welcome">
+                <Link to="/#">
                     <button  id="continue" style={{background:"#5561FF",color:"#FFFFFF",width:"160px",height:"50px",borderRadius:"8px"}}>
                         Agree and Continue
                     </button>

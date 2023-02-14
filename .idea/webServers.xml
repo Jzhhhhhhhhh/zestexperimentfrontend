@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="8e3fa4b1-0f7e-457f-8b93-87f03b55c7e6" name="zestdeployer\">
+        <fileTransfer accessType="SFTP" host="zest-survey-platform.ifi.uzh.ch" port="22" sshConfigId="0d1df9f1-ace0-4aa4-9e39-abcc5c4e7647" sshConfig="deployer@zest-survey-platform.ifi.uzh.ch:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
