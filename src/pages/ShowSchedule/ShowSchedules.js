@@ -5,10 +5,12 @@ import 'rsuite-table/dist/css/rsuite-table.css';
 import {Affix, Button, Input, Modal, Space, Table} from "antd";
 import {SearchOutlined} from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import {DEFAULT_URL} from "../../Components/Url";
+
 
 export default function ShowSchedules(){
     // const originUrl = 'https://zest-survey-platform.ifi.uzh.ch/api/'
-    const originUrl = "http://localhost:8080/"
+    const originUrl = DEFAULT_URL
     const [id, setId] = useState()
     const [questions, setQuestions] = useState()
     const [data, setData] = useState([])
@@ -26,10 +28,15 @@ export default function ShowSchedules(){
     const [questionIdList, setQuestionIdList] = useState()
     const [choices, setChoices] = useState([])
     const [showQuestionPart, setShowQuestionPart] = useState(false);
+    const [showChangeScheduleType, setShowChangeScheduleType] = useState(false)
+    const [showChangeType, setShowChangeType] = useState(false)
+    const [questionAliasList, setQuestionAliasList] = useState([])
+    const [questionAlias, setQuestionAlias] = useState([])
 
     const handleDeleteChoice = (index) =>{
         setChoices(choices.filter((choice,i)=>i!==index))
         setScheduleModuleList(scheduleModuleList.filter((module,i)=>i!=index))
+        setQuestionAliasList(questionAliasList.filter((module,i)=>i!=index))
     }
 
     const columns = [
@@ -45,12 +52,17 @@ export default function ShowSchedules(){
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
             const idList = []
+            let aliasList = []
             //console.log(selectedRows)
             for (const i in selectedRows){
                 //console.log(selectedRows[i])
                 idList.push(selectedRows[i]["id"])
             }
+            for (const i in selectedRows){
+                aliasList.push(selectedRows[i]['alias'])
+            }
             //console.log(idList)
+            setQuestionAlias(aliasList)
             setQuestionIdList(idList)
         },
         getCheckboxProps: (record) => ({
@@ -74,10 +86,32 @@ export default function ShowSchedules(){
             setStoppingCount(result.data['stoppingCount'])
             setScheduleType(result.data['scheduleType'])
             setScheduleModuleList(result.data['scheduleModuleList'])
+
             if (result.data['scheduleModuleList'] != null){
+                let choice = []
+                let list = []
                 for (let i = 0; i < result.data['scheduleModuleList'].length;i++){
-                    setChoices([...choices,'module'+result.data['scheduleModuleList'][i]['moduleType']])
+                    let alias = []
+                    for (let j=0; j<result.data['scheduleModuleList'][i]['questionIdList'].length; j++){
+                        const id = await axios.get(originUrl+'questions/'+result.data['scheduleModuleList'][i]['questionIdList'][j])
+                        alias.push(id.data['alias'])
+                    }
+                    console.log(alias)
+                    let aliasList = {
+                        moduleType: result.data['scheduleModuleList'][i]['moduleType'],
+                        questionIdList: result.data['scheduleModuleList'][i]['questionIdList'],
+                        questionAlias: alias
+                    }
+                    console.log(aliasList)
+                    list.push(aliasList)
+                    console.log(list)
+                    console.log(result.data['scheduleModuleList'][i]['moduleType'])
+                    choice.push('module:'+result.data['scheduleModuleList'][i]['moduleType'])
                 }
+                setQuestionAliasList(list)
+                console.log(list)
+                setChoices(choice)
+                console.log(choices)
             }
             console.log(result.data)
             const getQuestion = () => {return axios.get(originUrl+"questions")}
@@ -103,22 +137,25 @@ export default function ShowSchedules(){
     },[])
 
 
-
-    console.log(data)
-
-
-
     const changeModuleList=()=>{
         let moduleList = []
+        let aliasList = []
         if (scheduleModuleList){moduleList = scheduleModuleList}
-
         moduleList.push({
             questionIdList:questionIdList,
             moduleType:moduleType})
-
         setScheduleModuleList(moduleList)
+        if (questionAliasList){aliasList = questionAliasList
+        console.log(aliasList)}
+        aliasList.push({
+            questionIdList:questionIdList,
+            moduleType:moduleType,
+            questionAlias: questionAlias
+        })
         console.log(scheduleModuleList)
-        setChoices([...choices, 'module'+moduleType])
+        setQuestionAliasList(aliasList)
+        console.log(questionAliasList)
+        setChoices([...choices,'module:'+moduleType])
     }
 
     const changeSchedule=()=>{
@@ -150,7 +187,14 @@ export default function ShowSchedules(){
     const handleCancel = () => {setIsModalVisible(false);};
     const findQuestions = () =>{
         console.log(questions)
-        let question = questions.filter((choice)=>choice['@type']==moduleType)
+        let mtype
+        if (moduleType == "CODE"){
+            mtype = 'CodeEvaluation'
+        }
+        else if (moduleType == "DEMO"){
+            mtype = 'DemographicQuestion'
+        }
+        let question = questions.filter((choice)=>choice['@type']==mtype)
         console.log(question)
         let table = []
         table.push(<div style={{marginLeft:"3rem",marginRight:"3rem",marginTop:"5rem",height:"auto"}}>
@@ -191,11 +235,28 @@ export default function ShowSchedules(){
         {/*</div>*/}
                 <div style={{height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem", marginLeft:"-20rem"}}>
                     <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
-                    <h1 style={{marginLeft:"3rem"}}>scheduleType</h1>
-                    <div style={{marginLeft:"3rem"}}>
-                        <select style={{width:"10.8rem",height:"1.9rem",borderRadius:"0.5rem"}}defaultValue={data['scheduleTyoe']} onChange={(e)=>setScheduleType(e.target.value)}>
+                    <h1 style={{marginLeft:"3rem"}}>schedule mode</h1>
+                    <p style={{marginLeft:"3rem", display:"inline-block"}}>{data['scheduleType']}</p>
+                    <button style={{display:"inline-block",background:"#7f2687",marginLeft:"3rem",color:"white", borderRadius:"0.5rem"}} onClick={()=>setShowChangeScheduleType(true)}>change schedule type</button>
+                </div>
+
+                {showChangeScheduleType &&<div style={{
+                    height: "8rem",
+                    marginTop: "1rem",
+                    width: "40rem",
+                    background: "white",
+                    borderRadius: "1rem",
+                    marginLeft: "-20rem"
+                }}>
+                    <p style={{background: "#118847", height: "1rem", borderRadius: "1rem"}}></p>
+                    <h1 style={{marginLeft: "3rem"}}>schedule mode</h1>
+                    <div style={{marginLeft: "3rem"}}>
+                        <select style={{width: "10.8rem", height: "1.9rem", borderRadius: "0.5rem"}}
+                                onChange={(e) => setScheduleType(e.target.value)}>
                             <option value={"PILOT"}>PILOT</option>
-                            <option value={"EXPERIMENT"}>EXPERIMENT</option></select></div></div>
+                            <option value={"EXPERIMENT"}>EXPERIMENT</option>
+                        </select></div>
+                </div>}
 
                 <div style={{height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem", marginLeft:"-20rem"}}>
                     <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
@@ -211,15 +272,31 @@ export default function ShowSchedules(){
                 <div style={{height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem", marginLeft:"-20rem"}}>
                     <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
                     <h1 style={{marginLeft:"3rem"}}>type</h1>
-                    <div style={{marginLeft:"3rem"}}>
-                        <select style={{width:"10.8rem",height:"1.9rem",borderRadius:"0.5rem"}}defaultValue={data['@type']} onChange={(e)=>setType(e.target.value)}>
+                    <p style={{marginLeft:"3rem", display:"inline-block"}}>{data['@type']}</p>
+                    <button style={{display:"inline-block",background:"#7f2687",marginLeft:"3rem",color:"white", borderRadius:"0.5rem"}} onClick={()=>setShowChangeType(true)}>change schedule type</button>
+                </div>
+                {showChangeType &&<div style={{
+                    height: "8rem",
+                    marginTop: "1rem",
+                    width: "40rem",
+                    background: "white",
+                    borderRadius: "1rem",
+                    marginLeft: "-20rem"
+                }}>
+                    <p style={{background: "#118847", height: "1rem", borderRadius: "1rem"}}></p>
+                    <h1 style={{marginLeft: "3rem"}}>type</h1>
+                    <div style={{marginLeft: "3rem"}}>
+                        <select style={{width: "10.8rem", height: "1.9rem", borderRadius: "0.5rem"}}
+                                defaultValue={data['@type']} onChange={(e) => setType(e.target.value)}>
                             <option value={"EarlyStoppingSchedule"}>EarlyStoppingSchedule</option>
-                            <option value={"Schedule"}>Schedule</option></select></div></div>
+                            <option value={"Schedule"}>Schedule</option>
+                        </select></div>
+                </div>}
 
                 <div style={{height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem", marginLeft:"-20rem"}}>
                     <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
                     <h1 style={{marginLeft:"3rem", display:"inline-block"}}>moduleType</h1>
-                    <button onClick={findQuestions} style={{display:"inline-block", marginLeft:"10px"}}>find questions</button>
+                    <button onClick={findQuestions} style={{display:"inline-block",background:"#7f2687",marginLeft:"3rem",color:"white", borderRadius:"0.5rem"}}>find questions</button>
                     <br/>
                     <div style={{marginLeft:"3rem"}}>
                         <select style={{width:"10.8rem",height:"1.9rem",borderRadius:"0.5rem"}} onChange={(e)=>setModuleType(e.target.value)}>
@@ -244,7 +321,10 @@ export default function ShowSchedules(){
                                     {choices.map((module, index)=>(
                                         <li key={index}>
                                             {module}
-                                            <button onClick={()=>handleDeleteChoice(index)}>delete</button>
+                                            <button style={{background:"#7f2687",marginLeft:"3rem",color:"white", borderRadius:"0.5rem"}} onClick={()=>handleDeleteChoice(index)}>delete</button>
+                                            <li style={{marginLeft:"2rem"}} key={{index}}>
+                                                {questionAliasList[index]['questionAlias']+'\n'}
+                                            </li>
                                         </li>
                                     ))}
                                 </ul>

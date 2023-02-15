@@ -2,10 +2,12 @@ import React, {useState} from "react";
 import axios from "axios";
 import {Affix, Modal} from "antd";
 import 'antd/dist/antd.css'
+import {DEFAULT_URL} from "../../Components/Url";
+
 
 export default function NewQuestions(){
     // const originUrl = 'https://zest-survey-platform.ifi.uzh.ch/api/'
-    const originUrl = "http://localhost:8080/"
+    const originUrl = DEFAULT_URL
     // const [question, setQuestion] = useState()
     const [type, setType] = useState("DemographicQuestion")
     const [questionText, setQuestionText] = useState()

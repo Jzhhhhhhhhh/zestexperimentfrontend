@@ -4,10 +4,11 @@ import {useParams} from "react-router-dom";
 import {Modal} from 'antd'
 import 'rsuite-table/dist/css/rsuite-table.css';
 import {Affix} from "antd";
+import {DEFAULT_URL} from "../../Components/Url";
 
 export default function ShowQuestion(){
    // const originUrl = 'https://zest-survey-platform.ifi.uzh.ch/api/'
-    const originUrl = "http://localhost:8080/"
+    const originUrl = DEFAULT_URL
     const [id, setId] = useState()
     const [data, setData] = useState([])
     const [question, setQuestion] = useState()
@@ -21,6 +22,7 @@ export default function ShowQuestion(){
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [message, setMessage] = useState('failed')
     const params = useParams()
+    const [showChangeType, setShowChangeType] = useState(false)
     const [selectedOption, setSelectedOption] = useState("DemographicQuestion")
     const [choices, setChoices] = useState([])
     const [choice, setChoice] = useState('')
@@ -129,12 +131,34 @@ export default function ShowQuestion(){
                                 <div style={{height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
                                     <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
                                     <h1 style={{marginLeft:"3rem"}}>questionChoicesType</h1>
-                                    <p style={{marginLeft:"3rem"}}>{data['questionChoiceType']}</p></div>
-                                    {/*<select style={{marginLeft:"3rem",width:"10.8rem",height:"1.9rem",borderRadius:"0.5rem",borderStyle:"solid"}}defaultValue={data['questionChoicesType']} onChange={(e)=>setQuestionChoiceType(e.target.value)}>*/}
-                                    {/*    <option value={"MULTI_CHOICE"}>multi_choice</option>*/}
-                                    {/*    <option value={"SINGLE_CHOICE"}>single_choice</option>*/}
-                                    {/*    <option value={"TEXT"}>text</option>*/}
-                                    {/*    <option value={"SCALE_CHOICE"}>scale_choice</option></select></div>*/}
+                                        <p style={{marginLeft:"3rem", display:"inline-block"}}>{data['questionChoiceType']}</p>
+                                        <button style={{display:"inline-block"}} onClick={()=>setShowChangeType(true)}> change type</button>
+
+                                    </div>
+                                {showChangeType &&<div style={{
+                                    height: "8rem",
+                                    marginTop: "1rem",
+                                    width: "40rem",
+                                    background: "white",
+                                    borderRadius: "1rem"
+                                }}>
+                                    <p style={{background: "#118847", height: "1rem", borderRadius: "1rem"}}></p>
+                                    <h1 style={{marginLeft: "3rem"}}>change question choices type</h1>
+                                    <select style={{
+                                        marginLeft: "3rem",
+                                        width: "10.8rem",
+                                        height: "1.9rem",
+                                        borderRadius: "0.5rem",
+                                        borderStyle: "solid"
+                                    }} defaultValue={data['questionChoicesType']}
+                                            onChange={(e) => setQuestionChoiceType(e.target.value)}>
+                                        <option value={"MULTI_CHOICE"}>multi_choice</option>
+                                        <option value={"SINGLE_CHOICE"}>single_choice</option>
+                                        <option value={"TEXT"}>text</option>
+                                        <option value={"SCALE_CHOICE"}>scale_choice</option>
+                                    </select>
+                                </div>}
+
                                 <div style={{height:"auto",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem"}}>
                                     <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
                                     <h1 style={{marginLeft:"3rem"}}>questionChoices</h1>

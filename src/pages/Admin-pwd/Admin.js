@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link} from 'react-router-dom';
 import axios from "axios";
+import {DEFAULT_URL} from "../../Components/Url";
+
 
 class Admin extends React.Component{
 
@@ -15,8 +17,8 @@ class Admin extends React.Component{
             aliasList:[],
             scheduleList:[],
             finished:0,
-            // originUrl:'https://zest-survey-platform.ifi.uzh.ch/api/',
-            originUrl:"http://localhost:8080/",
+            originUrl:DEFAULT_URL,
+            // originUrl:"http://localhost:8080/",
         }
     }
     getFinished=()=>{

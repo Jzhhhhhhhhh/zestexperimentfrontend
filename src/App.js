@@ -12,6 +12,7 @@ import Evaluation from "./pages/Evaluation/evaluation";
 import AutoScrollToTop from "./Components/ScrollToTop";
 import { HashRouter as Router, Link, Route, Redirect,Routes } from 'react-router-dom';
 import ParticipantLandingPage from "./pages/Evaluation/ParticipantLandingPage";
+import AdminLandingPage from "./pages/HomePage/AdminLandingPage";
 
 
 
@@ -30,6 +31,7 @@ export default function App() {
                     <Route path="/showSchedule/:name" element={<ShowSchedules></ShowSchedules>}/>
                     <Route path="/showQuestion/:name" element={<ShowQuestion></ShowQuestion>}/>
                     <Route path="/:mode/:invitationId" element={<ParticipantLandingPage></ParticipantLandingPage>}/>
+                    <Route path="/adminLanding" element={<AdminLandingPage></AdminLandingPage>}/>
                 </Routes>
             </AutoScrollToTop>
         </Router>

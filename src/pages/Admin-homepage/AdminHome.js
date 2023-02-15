@@ -10,13 +10,16 @@ import {Modal} from 'antd'
 // import {Delete} from "@mui/icons-material";
 import {Affix} from "antd";
 import {Button} from "@mui/material";
+import {DEFAULT_URL} from "../../Components/Url";
 
 export default function AdminHome(){
     let alertContent = ''
     let questionInSchedule
     let escapedString
     // const originUrl = "https://zest-survey-platform.ifi.uzh.ch/api/"
-    const originUrl = "http://localhost:8080/"
+    const skipUrl = "https://zest-survey-platform.ifi.uzh.ch/#/"
+    const originUrl = DEFAULT_URL
+    console.log(originUrl)
     const [finished, setFinished] = useState()
     const [pilotFinished, setPilotFinished] = useState()
     const [experimentFinished, setExperimentFinished] = useState()
@@ -260,7 +263,7 @@ export default function AdminHome(){
                     console.log(invitations.data[i])
                     for (const j in invitations.data[i]){
                         if (j == "id")
-                            invitations.data[i][j] = originUrl
+                            invitations.data[i][j] = skipUrl
                                 +invitations.data[i]['type'].toLowerCase()+'/'+invitations.data[i][j]
                     }
                 }

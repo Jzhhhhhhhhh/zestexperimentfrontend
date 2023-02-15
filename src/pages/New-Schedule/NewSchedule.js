@@ -3,10 +3,12 @@ import axios from "axios";
 import {Affix, Modal, Table, Input, Space, Button} from "antd";
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
+import {DEFAULT_URL} from "../../Components/Url";
+
 
 export default function NewSchedule(){
     // const originUrl = 'https://zest-survey-platform.ifi.uzh.ch/api/'
-    const originUrl = "http://localhost:8080/"
+    const originUrl = DEFAULT_URL
     const [questionTable, setQuestionTable] = useState()
     const [questions, setQuestions] = useState()
     const [alias, setAlias] = useState()
@@ -25,13 +27,17 @@ export default function NewSchedule(){
     const searchInput = useRef(null);
     const [choices, setChoices] = useState([])
     const [choice, setChoice] = useState('')
+    const [questionAlias, setQuestionAlias] = useState([])
+    const [questionAliasList, setQuestionAliasList] = useState([])
 
     const [showQuestionPart, setShowQuestionPart] = useState(false);
     const [showStoppingCount, setShowStoppingCount] = useState(true);
 
     const handleDeleteChoice = (index) =>{
         setChoices(choices.filter((choice,i)=>i!==index))
-        setScheduleModuleList(scheduleModuleList.filter((module,i)=>i!=index))}
+        setScheduleModuleList(scheduleModuleList.filter((module,i)=>i!=index))
+        setQuestionAliasList(questionAliasList.filter((module,i)=>i!=index))
+    }
 
     const handleSearch = (
         selectedKeys: string,
@@ -135,11 +141,16 @@ export default function NewSchedule(){
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
             const idList = []
+            const aliasList = []
             //console.log(selectedRows)
             for (const i in selectedRows){
                 //console.log(selectedRows[i])
                 idList.push(selectedRows[i]["id"])
             }
+            for (const i in selectedRows){
+                aliasList.push(selectedRows[i]['alias'])
+            }
+            setQuestionAlias(aliasList)
             //console.log(idList)
             setQuestionIdList(idList)
         },
@@ -178,14 +189,25 @@ export default function NewSchedule(){
 
     const changeModuleList=()=>{
         let moduleList = []
+        let aliasList = []
         if (scheduleModuleList){moduleList = scheduleModuleList}
         moduleList.push({
             questionIdList:questionIdList,
             moduleType:moduleType})
         setScheduleModuleList(moduleList)
+        if (questionAliasList){aliasList = questionAliasList}
+        aliasList.push({
+            questionIdList:questionIdList,
+            moduleType:moduleType,
+            questionAlias: questionAlias
+        })
         console.log(scheduleModuleList)
+        setQuestionAliasList(aliasList)
+        console.log(questionAliasList)
         setChoices([...choices,'module:'+moduleType])
     }
+
+
     const changeSchedule=()=>{
         let schedule = [{
             alias:alias,
@@ -239,7 +261,7 @@ export default function NewSchedule(){
 
 
 
-    return(<div style={{background:"#cae8d7", height:"130rem"}}>
+    return(<div style={{background:"#cae8d7", height:"150rem"}}>
         <Affix offsetTop={0}>
             <div style={{background:"white",height:"8rem"}}>
                 <div style={{marginLeft:"50%"}}>
@@ -266,7 +288,7 @@ export default function NewSchedule(){
 
                 <div style={{height:"10.5rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem", marginLeft:"-20rem"}}>
                     <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
-                    <h1 style={{marginLeft:"3rem", display:"inline-block"}}>scheduleType</h1>
+                    <h1 style={{marginLeft:"3rem", display:"inline-block"}}>schedule mode</h1>
                     <p style={{marginLeft:"3rem"}}>If scheduleType is pilot, the first module should be a code evaluation module.</p>
                     <div style={{marginLeft:"3rem"}}>
                         <select style={{width:"10.8rem",height:"1.9rem",borderRadius:"0.5rem"}} onChange={(e)=>setScheduleType(e.target.value)}>
@@ -281,7 +303,7 @@ export default function NewSchedule(){
 
                 <div style={{height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem", marginLeft:"-20rem"}}>
                     <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
-                    <h1 style={{marginLeft:"3rem", display:"inline-block"}}>type</h1>
+                    <h1 style={{marginLeft:"3rem", display:"inline-block"}}>stoppingType</h1>
                     <div style={{marginLeft:"3rem"}}>
                         <select style={{width:"10.8rem",height:"1.9rem",borderRadius:"0.5rem"}} onChange={(e)=> {
                             setType(e.target.value)
@@ -298,7 +320,7 @@ export default function NewSchedule(){
                 <div style={{height:"8rem",marginTop:"1rem",width:"40rem",background:"white",borderRadius:"1rem", marginLeft:"-20rem"}}>
                     <p style={{background:"#118847", height:"1rem",borderRadius:"1rem"}}></p>
                     <h1 style={{marginLeft:"3rem", display:"inline-block"}}>moduleType</h1>
-                    <button onClick={findQuestions} style={{display:"inline-block", marginLeft:"10px"}}>find questions</button>
+                    <button onClick={findQuestions} style={{display:"inline-block",background:"#7f2687",marginLeft:"3rem",color:"white", borderRadius:"0.5rem"}}>find questions</button>
                     <br/>
                     <div style={{marginLeft:"3rem"}}>
                         <select style={{width:"10.8rem",height:"1.9rem",borderRadius:"0.5rem"}} onChange={(e)=>setModuleType(e.target.value)}>
@@ -337,7 +359,11 @@ export default function NewSchedule(){
                             <ul>{choices.map((module, index)=>(
                                 <li key={index}>
                                     {module}
-                                    <button onClick={()=>handleDeleteChoice(index)}>delete</button>
+                                    <button style={{background:"#7f2687",marginLeft:"3rem",color:"white", borderRadius:"0.5rem"}} onClick={()=>handleDeleteChoice(index)}>delete</button>
+                                    <li style={{marginLeft:"2rem"}} key={{index}}>
+                                        {/*{questionIdList}*/}
+                                        {questionAliasList[index]['questionAlias']+'\n'}
+                                    </li>
                                 </li>))}
                             </ul>
                         </div>)}

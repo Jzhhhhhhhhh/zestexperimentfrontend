@@ -4,17 +4,21 @@ import Axios from 'axios'
 import {Box, CircularProgress, Paper} from "@mui/material";
 import BareQuestion from "./questions/bare_question";
 import 'highlight.js/styles/atom-one-dark-reasonable.css';
+import {DEFAULT_URL} from "../../Components/Url";
+
 
 class Evaluation extends React.Component{
     constructor(props) {
         super(props);
         let href = window.location.href
         let index = href.lastIndexOf("/");
-        let invitation_id = href.substring(index + 1,href.length);
+        let invitation_id = this.props.iniviation_id;
+        // let invitation_id = href.split('/')[href.split('/').length-1]
         this.state = {
             done: false,
             mode: this.props.mode,
-            url: 'https://zest-survey-platform.ifi.uzh.ch/api/' + this.props.mode + '/' + invitation_id,
+            // url: 'https://zest-survey-platform.ifi.uzh.ch/api/' + this.props.mode + '/' + invitation_id,
+            url: DEFAULT_URL + this.props.mode + '/' + invitation_id,
             questionEntities: null,
         }
         console.log(window.location.href)
